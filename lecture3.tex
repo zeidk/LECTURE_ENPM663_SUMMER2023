@@ -302,6 +302,10 @@
 \definecolor{codecolor3}{HTML}{0E6B8C}
 \newcommand{\codecolorIII}[1]{\textcolor{IndianRed1}{\bf #1}}
 
+
+\newcommand{\crosmsgComment}[1]{{\color{nordThree}{\textit{#1}}}}
+\definecolor{disclaimer}{HTML}{EBCB8B}  
+\newcommand{\mydisclaimer}{{\color{disclaimer}{\footnotesize Lecture 3~}}}
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 % line number customized
 \renewcommand{\theFancyVerbLine}{\textcolor{carnival19}{\sf\scriptsize\arabic{FancyVerbLine}}}
@@ -424,7 +428,7 @@
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 % href stuff
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-\newcommand{\urllink}[2]{\href{#1}{\cnordEleven{\uline{#2}}}}
+\newcommand{\urllink}[2]{\href{#1}{\textcolor{DimGray}{\uline{#2}}}}
 
 \newcommand{\myemail}[2]{\href{#1}{\cnordTwelve{{\scriptsize\faEnvelope[regular]~}\uline{#2}}}}
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
@@ -1520,6 +1524,14 @@ nobeforeafter,
     rectangle node[text=black,font=\sffamily\bfseries\scriptsize,rotate=0] {$\mathcal{P}$} ([xshift=6mm]frame.north west);\end{tcbclipinterior}}}
     
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+\newtcbox{\myMessage}{enhanced,nobeforeafter,tcbox raise base,boxrule=0.5pt,top=0mm,bottom=0mm,
+  right=0mm,left=6mm,arc=1pt,boxsep=1pt,before upper={\vphantom{dlg}},
+  colframe=black,coltext=nordZero,colback=white,
+  overlay={\begin{tcbclipinterior}\fill[roscolor] (frame.south west)
+    rectangle node[text=black,font=\sffamily\bfseries\footnotesize,rotate=0] {m} ([xshift=6mm]frame.north west);\end{tcbclipinterior}}}
+
+    
 \newtcbox{\mymessageNormal}{enhanced,nobeforeafter,tcbox raise base,boxrule=0.5pt,top=0mm,bottom=0mm,
   right=0mm,left=6mm,arc=1pt,boxsep=1pt,fontupper=\normalsize\raleway,before upper={\vphantom{dlg}},
   colframe=black,coltext=nordZero,colback=white,
@@ -1560,10 +1572,14 @@ nobeforeafter,
 
     
 \newtcbox{\myTerminal}{enhanced,nobeforeafter,tcbox raise base,boxrule=0.5pt,top=0mm,bottom=0mm,
-  right=0mm,left=6mm,arc=1pt,boxsep=1pt, fontupper=\ttfamily, before upper={\vphantom{dlg}},
-  colframe=BrickRed,coltext=white,colback=black,
+  right=0mm,left=6mm,arc=1pt,boxsep=1pt, fontupper=\sffamily, before upper={\vphantom{dlg}},
+  colframe=DodgerBlue,coltext=white,colback=black,
   overlay={\begin{tcbclipinterior}\fill[white] (frame.south west)
     rectangle node[text=BrickRed,font=\sffamily\bfseries\tiny,rotate=0] {\faTerminal} ([xshift=6mm]frame.north west);\end{tcbclipinterior}}}
+
+\newtcbox{\myTerminalBlank}{enhanced,nobeforeafter,tcbox raise base,boxrule=0.5pt,top=0mm,bottom=0mm,
+  right=0mm,left=0mm,arc=1pt,boxsep=1pt, fontupper=\sffamily, before upper={\vphantom{dlg}},
+  colframe=DodgerBlue,coltext=white,colback=black}
     
 \newtcbox{\myFolder}{enhanced,nobeforeafter,tcbox raise base,boxrule=0.5pt,top=0mm,bottom=0mm,
   right=0mm,left=6mm,arc=1pt,boxsep=1pt,before upper={\vphantom{dlg}},
@@ -1830,1512 +1846,828 @@ urlcolor={citationcolor}
 \end{frame}
 
 
-
-%=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=
-\section{Lots of Programming!}
-%=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=
-\begin{frame}[fragile]{\sec}
-% \vspace{-10pt}
-\vspace*{\fill}
-\begin{center} 
-\begin{figure}
-    \centering
-    \includegraphics[width=10.5cm]{figures/lecture2/meme.pdf}
-\end{figure}
-    \end{center}
-\vspace*{\fill}
-\end{frame}
-
-
-%=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=
-\section{Programming Languages for ARIAC}
-%=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=
+%#####################################
+\section{Node}
+%#####################################
 \begin{frame}[fragile]{\sec}
 \vspace*{\fill}
 
-{\large \mynote Programming Languages in ARIAC} \doublerulefill
+{\large \myDefinitionIcon Node} \doublerulefill
+
+\begin{center}
+\emph{A \CC Node needs to be compiled while a Python Node does not.}
+\begin{compactitem}
+\footnotesize
+    \item Python Nodes can communicate with Python and \CC Nodes.
+    \item \CC Nodes can communicate with Python and \CC Nodes.
+\end{compactitem}
+\end{center}
 
 
-\begin{center} 
-    \begin{compactitem}
-    \item \CC and Python can be used to develop a control system for ARIAC.
-    \item There is an \urllink{https://github.com/UniversalRobots/Universal_Robots_ROS2_Gazebo_Simulation/issues/19}{issue} with  UR robot controllers in ROS Humble.
-    \item UR robot controllers work in ROS Galactic but the Python Moveit API is still being ported.
-    \begin{compactitem}
-    \item \textbf{Solution \#1}
-        \begin{compactitem}
-            \item Use only \CC
-        \end{compactitem}
-        \item \textbf{Solution \#2}
-        \begin{compactitem}
-            \item Use Python to interface with ARIAC to retrieve orders and to detect challenges.
-            \item Use \CC to control the robot with Moveit.
-        \end{compactitem}
-    \end{compactitem}
-    \end{compactitem}
-    \end{center}
-\vspace*{\fill}
-\end{frame}
 
 
-%=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=
-\section{Linux Basics}
-%=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=
-\begin{frame}[fragile]{\sec}
-\vspace*{\fill}
-\begin{center} 
-%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-{\large \mydefinition Shell} \doublerulefill
-
-\emph{A program which takes keyboard commands and passes them to the OS to carry out.}
+{\footnotesize \mytodo Run \CC Nodes }\doublerulefill
 
 \begin{compactitem}
-    \item The Bourne shell (\texttt{sh}), developed by Steve Bourne, is regarded as the first UNIX shell ever but it has many drawbacks. 
-    \item Many shells were developed to improve the Bourne Shell.
-    \begin{compactitem}
-    \footnotesize
-        \item The GNU Bourne-Again Shell (\texttt{bash}), the C Shell (\texttt{csh}), the Korn shell (\texttt{ksh}), the Z shell (\texttt{zsh}), etc.
-        \item Check the current shell of your system with \myTerminal{ps -p \$\$} 
-    \end{compactitem}
-    \item A shell script is a plain text file which contains a series of shell commands. Anything you can run normally on the command line can be put into a script and vice-versa.
-    \item \mynote I use \urllink{https://github.com/ohmyzsh/ohmyzsh/wiki/Installing-ZSH}{zsh} instead of bash.
+\footnotesize
+    \item \CC \myTerminal{ros2 run demo_nodes_cpp talker}, \CC \myTerminal{ros2 run demo_nodes_cpp listener}
 \end{compactitem}
 
-\end{center}
-\vspace*{\fill}
-\end{frame}
+{\footnotesize \mytodo  Run Python Nodes }\doublerulefill
 
-
-\begin{frame}[fragile]{\sec}
-\vspace*{\fill}
-\begin{center} 
-%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-{\large \mydefinition Terminal} \doublerulefill
-
-\emph{A text window program that runs a shell (BASH shell in Ubuntu).}
 \begin{compactitem}
-\small
-        \item Some bash commands are blocking and the only way to terminate these commands is to click in the terminal and then \myKeyboardShortcut{Ctrl+c}
-        \item You can open a terminal with \myKeyboardShortcut{Ctrl+Alt+t}
-        \item \mynote I use \urllink{https://gnome-terminator.org/}{terminator} for the terminal.
-        \item \mybestpractice Be efficient, use the \myKeyboardShortcut{Tab} key for auto-completion when working with the terminal.
-    \end{compactitem}
-\end{center}
+\footnotesize
+    \item Python \myTerminal{ros2 run demo_nodes_py talker}, Python \myTerminal{ros2 run demo_nodes_py listener}
+\end{compactitem}
+
+{\footnotesize \mytodo Run \CC and Python Nodes }\doublerulefill
+
+\begin{compactitem}
+\footnotesize
+    \item \CC \myTerminal{ros2 run demo_nodes_cpp talker}, Python \myTerminal{ros2 run demo_nodes_py listener}
+    \item Python \myTerminal{ros2 run demo_nodes_py talker}, \CC \myTerminal{ros2 run demo_nodes_cpp listener}
+\end{compactitem}
 \vspace*{\fill}
 \end{frame}
 
-% \begin{frame}[fragile]{\sec}
-% \vspace*{\fill}
-% \begin{center} 
-% %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-% {\large \mynote} \doublerulefill
 
 
-% \begin{compactitem}
-%     \large
-%     \item I use \urllink{https://github.com/ohmyzsh/ohmyzsh/wiki/Installing-ZSH}{zsh} instead of bash.
-%     \item I use \urllink{https://gnome-terminator.org/}{terminator} for the terminal.
-
-% \end{compactitem}
-% \end{center}
-% \vspace*{\fill}
-% \end{frame}
-
-%=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=
-% \begin{frame}[fragile]{\sec}
-% \vspace*{\fill}
-% \begin{center} 
-
-% {\Large \mybestpractice} \doublerulefill
-
-% {\large Be efficient, use the \mykbNormal{Tab} key for autocompletion when working with the terminal.}
-% \end{center}
-% \vspace*{\fill}
-% \end{frame}
-
-%=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=
-\subsection{bashrc}
-%=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=
+%#####################################
+\subsection{Message}
+%#####################################
 \begin{frame}[fragile]{\secsec}
 \vspace*{\fill}
-\begin{center} 
 
-{\large \mydefinition bashrc File} \doublerulefill
+{\large \myDefinitionIcon Message} \doublerulefill
 
-\myFile{bashrc} \emph{ is a hidden bash script located in your home directory and runs whenever it is started interactively. It initializes an interactive shell session. In other words, everything in this script is executed when you open a terminal.}
-
-\hrulefill
-
-
-\begin{compactitem}
-    \item \myFile{bashrc} is a hidden file located in your Home directory.
-    \item To display hidden files and folders:
-    \begin{compactitem}
-        \item \myTerminal{ls -a} in a terminal.
-        \item From a GUI file manager: \myKeyboardShortcut{Ctrl+h}
-    \end{compactitem}
-    \item You put commands in this file to set up the shell for use in your particular environment, or to customize things to your preferences.
-    \begin{compactitem}
-        \item Common things to put in \myFile{bashrc} are functions, aliases, and environment variables.
-    \end{compactitem}
-\end{compactitem}
+\begin{center}
+\footnotesize
+Nodes communicate with each other by publishing Messages to Topics. A Message is a simple data structure, comprising typed fields.
 \end{center}
-\vspace*{\fill}
-\end{frame}
 
 
-%=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=
-\subsubsection*{Functions}
-%=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=
-\begin{frame}[fragile]{\secsecsec}
-\vspace*{\fill}
-\begin{center} 
 
-{\large \mycodesyntax Functions} \doublerulefill
-
-Bash functions may be declared in two different formats.
-
-\begin{columns}[T]
-    \begin{column}{0.5\textwidth}
+{\footnotesize \mytodo Display Published Messages }\doublerulefill
 
 \begin{compactitem}
-    \begin{bashscriptsyntax}
-function_name () {
-  commands
-}
-\end{bashscriptsyntax}
-\item Example:
-\begin{bashscript}
-greeting () {
-  echo Hello
-}
-\end{bashscript}
-
-\myTerminal{greeting} to call the function.
+\footnotesize
+    \item Run the Node: \myTerminal{ros2 run demo_nodes_cpp talker}
+    \item Display Messages: \myTerminal{ros2 topic echo /chatter}
 \end{compactitem}
-    \end{column}
-    
-\begin{column}{0.5\textwidth}
-\begin{compactitem}
-    \begin{bashscriptsyntax}
-function function_name {
-  commands
-}
-\end{bashscriptsyntax}
-\item Example:
-\begin{bashscript}
-function greeting () {
-  echo Hello
-}
-\end{bashscript}
 
-\myTerminal{greeting} to call the function.
-\end{compactitem}
-\end{column}
- \end{columns}
-%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-\end{center}
-\vspace*{\fill}
-\end{frame}
-
-
-%=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=
-\begin{frame}[fragile]{\secsecsec}
-\vspace*{\fill}
-\begin{center} 
-
-{\large \mycodesyntax Functions} \doublerulefill
-
-\emph{Passing arguments to a function.}
-
+{\footnotesize \mytodo  Visualize Message Definition }\doublerulefill
 
 \begin{compactitem}
-
-\begin{bashscript}
-greeting () {
-  echo Hello $1 $2
-}
-\end{bashscript}
-
-\myTerminal{greeting John Doe} to call the function with arguments.
-\item The parameters are \$1, \$2, \ldots, corresponding to the position of the argument passed after the function's name.
-\item The \$0 variable is reserved for the function's name.
-\item The \$\#  variable holds the number of positional parameters/arguments passed to the function.
-\begin{bashscript}
-test(){                
-    echo $0 $# $1 $2
-}
-
-\end{bashscript}
-
-\myTerminal{test a b c d e f}
-\end{compactitem}
-%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-
-\end{center}
-\vspace*{\fill}
-\end{frame}
-
-%=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=
-\begin{frame}[fragile]{\secsecsec}
-\vspace*{\fill}
-\begin{center} 
-
-{\large \mycodesyntax Function Selection} \doublerulefill
-
-\emph{You can give the user a choice of the function to execute when you open a terminal}
-
-
-
-\begin{bashTinyList}
-function one(){
-  echo "Function one"
-}
-
-function two(){
-  echo "Function two"
-}
-
-function select_function(){
-  echo "1) one"
-  echo "2) two"
-  
-  echo -n "Select a function: "
-  read choice
-  case $choice in
-    1) one;;
-    2) two;;
-    *) echo "No function was selected";;
-  esac
-}
-
-# Function call
-select_function
-\end{bashTinyList}
-
-
-%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-
-\end{center}
-\vspace*{\fill}
-\end{frame}
-
-%=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=
-\subsubsection*{Aliases}
-%=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=
-\begin{frame}[fragile]{\secsecsec}
-\vspace*{\fill}
-\begin{center} 
-
-{\large \mydefinition Aliases} \doublerulefill
-
-\emph{Bash aliases are essentially shortcuts that can save you from having to remember or type long commands.}
-
-
-\begin{compactitem}
-\item The syntax to create an alias:
-\begin{bashscriptsyntax}
-alias identifier="value"
-\end{bashscriptsyntax}
-\begin{compactitem}
-    \item An alias declaration starts with the \bashFootnote{alias} keyword followed by the alias identifier, an equal sign and the value (the command you want to run for the alias). 
-        \item The command needs to be enclosed in quotes and with \emph{no spacing around the equal sign}. 
-        \item Each alias needs to be declared on a new line.
-        \item Aliases can be declared anywhere in the file.
-\end{compactitem}
-\item Aliases I will be using in ROS lectures:
+\small
+     \item Get Message type: \myTerminal{ros2 node info /talker} or \myTerminal{ros2 topic type /chatter}
     \begin{bashscript}
-    alias ..="cd .."
-    alias sr="source /home/zeid/.zshrc"
-    # alias sr="source /home/zeid/.bashrc"
+    example_interfaces/msg/String
     \end{bashscript}
-\item \mynote New aliases will be created when needed.
-\end{compactitem}
-
-
-\end{center}
-\vspace*{\fill}
-\end{frame}
-
-
-%=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=
-\subsection{source}
-\begin{frame}[fragile]{\secsec}
-\vspace*{\fill}
-\begin{center} 
-
-{\large \mynote source Command} \doublerulefill
-
-
-If you modify \myFile{bashrc} with a terminal already opened, your modifications will not automatically take effect in the current terminal.
-
-
-\myhrulefill
-
-\begin{compactitem}
-% \item Opening a new terminal each time is not efficient at all.
-\item The command \myTool{source <file>} allows you to execute each line of a file in the current terminal.
-\item To reload \myFile{bashrc} in the current terminal: \myTerminal{source \textasciitilde/.bashrc} (or create an alias for this command as seen in the previous slide).
-\item \mynote The command \myTool{. <file>} does the same thing as \myTool{source <file>}
-\end{compactitem}
-
-\end{center}
-\vspace*{\fill}
-\end{frame}
-
-
-%=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=
-\section{Robot Operating System (ROS)}
-\begin{frame}[fragile]{\sec}
-\vspace*{\fill}
-\begin{center} 
-
-{\large \mydefinition} \doublerulefill
-
-{\emph{ROS is not really an operating system (OS) but more like a software development kit (SDK). According to Brian Gerkey\footnote{\tiny{\url{https://answers.ros.org/question/12230/what-is-ros-exactly-middleware-framework-operating-system/}}}, ROS is a combination of plumbing, tools, capabilities, and ecosystem.}}
-
-\includegraphics[width=13cm]{figures/lecture2/ros-equation.png}
-
-\begin{compactitem}
-\footnotesize
-\item Prototypes originated from Standford AI research and officially released by Willow Garage in 2017.
-    \item ROS is currently maintained by \urllink{https://www.openrobotics.org/}{Open Robotics}.
-    \item \mytodo Watch the video on \urllink{https://ros.org/}{https://ros.org/}
-\end{compactitem}
-\end{center}
-\vspace*{\fill}
-\end{frame}
-
-
-%=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=
-\subsection{Resource}
-%=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=
-\begin{frame}[fragile]{\secsec}
-\vspace*{\fill}
-\begin{center} 
-
-{\large \mynote Resources} \doublerulefill
-
-\begin{compactitem}
-    \item Official website: \urllink{http://wiki.ros.org/}{http://wiki.ros.org/}
-    \item Tutorials: \urllink{http://wiki.ros.org/ROS/Tutorials}{http://wiki.ros.org/ROS/Tutorials}
-    \item ROS index: \urllink{https://index.ros.org/packages/#galactic}{https://index.ros.org/packages/#galactic}
-    \item ROS discourse: \urllink{https://discourse.ros.org/}{https://discourse.ros.org/}
-    \item REPs: \urllink{https://www.ros.org/reps/rep-0001.html}{https://www.ros.org/reps/rep-0001.html}
-\end{compactitem}
-\end{center}
-\vspace*{\fill}
-\end{frame}
-
-%=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=
-\subsection{Why ROS2?}
-%=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=
-\begin{frame}[fragile]{\secsec}
-\vspace*{\fill}
-\begin{center} 
-
-{\large \mynote ROS1: Drawbacks} \doublerulefill
-
-\begin{compactitem}
-    \item ROS1 was mainly developed for the academic research community in 2007 by Willow Garage.
-    \item Over the years, ROS1 has become huge in the open source robotic communities.
-    \item Companies and agencies can not use ROS1 due to lack of  important requirements.
-    \begin{compactitem}
-        \item No \emph{real time}: The purpose of ROS1 was to save development time and not to ensure real-time operations.
-        \item No \emph{security} because modules communicate over standard networking protocols, which are prone to cyber attacks.
-        \item No \emph{safety certification} means it can not ensure the safety of people using it.
-    \end{compactitem}
-    \item While ROS1 is holding up well, to better meet the needs of a now-broader ROS community, new use cases must be addressed.
-\end{compactitem}
-\end{center}
-\vspace*{\fill}
-\end{frame}
-
-%=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=
-\begin{frame}[fragile]{\secsec}
-\vspace*{\fill}
-\begin{center} 
-{\large \mynote ROS1: Missing Use Cases} \doublerulefill
-
-
-   \begin{compactitem}
-   \item \emph{Teams of multiple robots}: No standard approach to build multi-robot systems. They are all somewhat of a hack on top of the single-master structure (no multi masters concept).
-   \item \emph{Small embedded platforms}: ROS1 does not allow small computers, including micro controllers, to be first-class participants in the ROS environment.
-   \item \emph{Non-ideal networks}: ROS1 does not behave well when network connectivity degrades due to loss and/or delay, from poor-quality WiFi to ground-to-space communication links.
-   \end{compactitem}
-
-\end{center}
-\vspace*{\fill}
-\end{frame}
-
-%=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=
-\subsection{ROS2}
-%=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=
-\begin{frame}[fragile]{\secsec}
-\vspace*{\fill}
-\begin{center} 
-{\large \mynote ROS2: Overview} \doublerulefill
-
-\begin{itemize}
-    \item ROS2 is not built on top of ROS1. ROS developers wanted ROS1 as it exists today to keep working and be unaffected by the development of ROS2. \item The API in ROS2 has been modified since most of the code in ROS1 is from 2007-2009.
-   \item The key concepts (e.g., Nodes, Topics, Messages) still remain the same in ROS2 but by default, ROS2 API-code is not compatible with existing ROS1 code.
-   \begin{itemize}
-       \item ROS1 code can still be run in ROS2 with a bridge from ROS1 to ROS2 (see \urllink{https://github.com/ros2/ros1_bridge}{ros1_bridge}).
-   \end{itemize}
-   \item Some packages from ROS1 are still being ported to ROS2.
-   \end{itemize}
-\end{center}
-\vspace*{\fill}
-\end{frame}
-
-%=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=
-\begin{frame}[fragile]{\secsec}
-\vspace*{\fill}
-\begin{center} 
-    \includegraphics[width=15cm]{figures/lecture2/ros1_ros2_architecture.pdf}
-\end{center}
-\vspace*{\fill}
-\end{frame}
-
-%=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=
-\subsubsection*{DDS}
-%=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=
-\begin{frame}[fragile]{\secsecsec}
-\vspace*{\fill}
-\begin{center} 
-
-{\large \mynote DDS: Data Distributed Service} \doublerulefill
-
-
-\begin{itemize}
-\small
-% \item When exploring options for the next generation communication system of ROS, Open Robotics initially considered to either improve the ROS1 transport or build a new middleware using component libraries. ROS developers finally decided to leverage an existing and well developed implementation of DDS. 
-    \item DDS is a middleware which aims to enable high-performance data exchanges using a publish-subscribe transport (similar to ROS1 publish-subscribe transport).
     
-    \item DDS  is a proven industry standard and it is implemented by many vendors: eProsima's Fast DDS, RTI's Connext DDS, Eclipse Cyclone DDS, and GurumNetworks GurumDDS.
-    \item The DDS market is more general: Battleships, large utility installations like dams, financial systems, space systems, flight systems, train switchboard systems, and many more.
-
-    \item The default discovery system provided by DDS is a distributed discovery system. This allows any two DDS Nodes to communicate without the need for the ROS Master. This makes the system more fault tolerant and flexible. 
-    
-\end{itemize}
-\end{center}
-\vspace*{\fill}
-\end{frame}
-
-%=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=
-\begin{frame}[fragile]{\secsecsec}
-%=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=
-\vspace*{\fill}
-\begin{center} 
-{\large \mytodo Check DDS Version} \doublerulefill
-
-\begin{enumerate}
-\small
-    \item \myTerminal{source /opt/ros/galactic/setup.bash}
-    \item \myTerminal{ros2 doctor -{}-report}
-\end{enumerate}
-
-\hrulefill
-
-\mynote If you want to use a different version of DDS implementation you need to \urllink{https://docs.ros.org/en/galactic/Installation/DDS-Implementations.html#}{install new packages}.
-\end{center}
-\vspace*{\fill}
-\end{frame}
-
-% %=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=
-% \subsubsection*{Packages}
-% %=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=
-% \begin{frame}[fragile]{\secsecsec}
-% %=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=
-% \vspace*{\fill}
-% \begin{center} 
-% {\large \mytodo \textsc{Debian Packages}} \doublerulefill
-
-% \begin{itemize}
-%     \item ROS Debian packages (installed via \myterminalSmall{sudo apt install}) are located in  \mydirSmall{/opt/ros/galactic/share}
-%     \begin{itemize}
-%         \item \mywarning Never modify anything in this folder.
-%         \item If you need to modify files from this folder, clone the package in your ROS workspace or copy/paste files in your ROS workspace.
-%     \end{itemize}
-% \end{itemize}
-% \end{center}
-% \vspace*{\fill}
-% \end{frame}
-
-
-%=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=
-\subsubsection*{Colcon}
-%=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=
-\begin{frame}[fragile]{\secsecsec}
-%=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=
-\vspace*{\fill}
-\begin{center} 
-
-{\large \mytodo Install Extensions for VS Code} \doublerulefill
-
-    \begin{compactitem}
-        \item \urllink{https://marketplace.visualstudio.com/items?itemName=ms-iot.vscode-ros}{ROS}
-        \item \urllink{https://marketplace.visualstudio.com/items?itemName=twxs.cmake}{CMake}
-    \end{compactitem}
-
-
-{\large \mytodo Install Colcon} \doublerulefill
-
-\emph{\urllink{https://colcon.readthedocs.io/en/released/}{colcon} is a command line tool to improve the workflow of building, testing and using multiple software packages.}
-
-
-\begin{compactitem}
-    \item Install colcon:
-    \begin{compactitem}
-        \item \myTerminal{sudo apt update}
-        \item \myTerminal{sudo apt install python3-colcon-common-extensions}
-    \end{compactitem}
-\end{compactitem}
-\end{center}
-\vspace*{\fill}
-\end{frame}
-
-% %=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=
-% \subsubsection*{Setup .bashrc}
-% %=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=
-% \begin{frame}[fragile]{\secsecsec}
-% %=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=
-% \vspace*{\fill}
-% \begin{center} 
-% {\large \mytodo Set up the Linux environment for ROS2} \doublerulefill
-
-
-% \begin{compactitem}
-%     \item Edit \myfileFoot{.bashrc}
-%     \begin{compactitem}
-%         \item \bashFootnote{source /opt/ros/galactic/setup.bash}
-%         \item \bashFootnote{source /usr/share/colcon_argcomplete/hook/colcon-argcomplete.bash}
-%         \item \bashFootnote{source /usr/share/colcon_cd/function/colcon_cd.sh}
-%         \item \bashFootnote{eval "$(register-python-argcomplete3 ros2)"}
-%         \item \bashFootnote{eval "$(register-python-argcomplete3 colcon)"}
-%     \end{compactitem}
-% \end{compactitem}
-% \end{center}
-% \vspace*{\fill}
-% \end{frame}
-
-
-%=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=
-\subsubsection*{Setup .bashrc or .zshrc}
-%=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=
-\begin{frame}[fragile]{\secsecsec}
-%=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=
-\vspace*{\fill}
-\begin{center} 
-{\large \mytodo Set up the Linux environment for ROS2} \doublerulefill
-
-\begin{compactitem}
-\footnotesize
-\item Edit \myfileFoot{.bashrc}
-    \begin{bashScriptList}
-source /opt/ros/galactic/setup.bash
-source /usr/share/colcon_argcomplete/hook/colcon-argcomplete.bash
-source /usr/share/colcon_cd/function/colcon_cd.sh
-eval "$(register-python-argcomplete3 ros2)"
-eval "$(register-python-argcomplete3 colcon)"
-    \end{bashScriptList}
-
-\item Edit \myfileFoot{.zshrc}
-    \begin{bashScriptList}
-source /opt/ros/galactic/setup.zsh
-source /usr/share/colcon_argcomplete/hook/colcon-argcomplete.zsh
-source /usr/share/colcon_cd/function/colcon_cd.sh
-eval "$(register-python-argcomplete3 ros2)"
-eval "$(register-python-argcomplete3 colcon)"
-    \end{bashScriptList}
-    
-\end{compactitem}
-\end{center}
-\vspace*{\fill}
-\end{frame}
-
-%=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=
-\section{Node, Topic, and Message}
-%=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=
-\begin{frame}[fragile]{\sec}
-\vspace*{\fill}
-
-%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-
-{\large \mydefinition Node} \doublerulefill
-
-\large \emph{A \urllink{http://wiki.ros.org/ROS/Tutorials/UnderstandingNodes}{Node} is a small program written in Python or \CC that executes some relatively simple task or process. Nodes are usually categorized into Publishers (send data) and Subscribers (receive data).} 
-
-
-{\large \mydefinition Topic} \doublerulefill
-
-\large \emph{A \urllink{http://wiki.ros.org/Topics}{Topic} is a named bus\footnote{A communication system that transfers data between components inside a computer or between computers} over which Nodes exchange Messages.}
-
-{\large \mydefinition Message} \doublerulefill
-
-\large \emph{A \urllink{http://wiki.ros.org/Messages}{Message} is a packet of data (a simple data structure comprising typed fields).}
-
-\vspace*{\fill}
-\end{frame}
-
-%=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=
-\begin{frame}[fragile]{\sec}
-\vspace*{\fill}
-\begin{center} 
-Analogy from \urllink{https://www.skillshare.com/profile/Edouard-Renard/690578289}{Edouard Renard}.
-
-\includegraphics[width=.6\linewidth]{figures/lecture2/analogy1.pdf}
-
-\end{center}
-\vspace*{\fill}
-\end{frame}
-
-%=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=
-\begin{frame}[fragile]{\sec}
-\vspace*{\fill}
-\begin{center} 
-Publishers and subscribers must work with the same Message type.
-
-\includegraphics[width=.7\linewidth]{figures/lecture2/analogy2.pdf}
-
-\end{center}
-\vspace*{\fill}
-\end{frame}
-
-
-%=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=
-\begin{frame}[fragile]{\sec}
-\vspace*{\fill}
-\begin{center} 
-Publishers and subscribers must work with the same Topic name.
-
-\includegraphics[width=.7\linewidth]{figures/lecture2/analogy3.pdf}
-
-\end{center}
-\vspace*{\fill}
-\end{frame}
-
-
-%=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=
-\begin{frame}[fragile]{\sec}
-\vspace*{\fill}
-\begin{center} 
-The goal of Publishers is to only send Messages to Topics.
-
-\includegraphics[width=.7\linewidth]{figures/lecture2/analogy4.pdf}
-
-\end{center}
-\vspace*{\fill}
-\end{frame}
-
-
-%=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=
-\begin{frame}[fragile]{\sec}
-\vspace*{\fill}
-\begin{center} 
-The goal of Subscribers is to only receive Messages from Topics.
-
-\includegraphics[width=.7\linewidth]{figures/lecture2/analogy5.pdf}
-
-\end{center}
-\vspace*{\fill}
-\end{frame}
-
-
-
-%=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=
-\begin{frame}[fragile]{\sec}
-\vspace*{\fill}
-\begin{center} 
-There can be multiple Subscribers to a Topic. 
-
-\begin{compactitem}
-\footnotesize
-\item Publishers are not aware who is receiving the Messages. Their goal is to send Messages.
-\item Subscribers are not aware who is sending the Messages. Their goal is to receive the Messages.
+    \item Get Message definition: \myTerminal{ros2 interface show example_interfaces/msg/String}
+    \begin{bashscript}
+    string data
+    \end{bashscript}
+\item This means that if you want to publish a Message of type \myMessage{example_interfaces/msg/String} you will need to provide a string value for the field \emph{data}. If you want to retrieved a Message of type \myMessage{example_interfaces/msg/String} you will need to retrieve the value of the field \emph{data}.
 \end{compactitem}
 
-\includegraphics[width=.7\linewidth]{figures/lecture2/analogy6.pdf}
-
-\end{center}
-\vspace*{\fill}
-\end{frame}
-
- 
-%=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=
-\begin{frame}[fragile]{\sec}
-\vspace*{\fill}
-\begin{center} 
-There can be multiple Publishers to the same Topic. 
-
-\begin{compactitem}
-\footnotesize
-
-\item In this analogy, multiple radio stations can send signals to the same radio frequency. You may listen to a Pop music channel in Maryland but to a Country music channel in Texas.
-\item \mynote In ROS, a Topic remapping is performed.
-\end{compactitem}
-
-\includegraphics[width=.7\linewidth]{figures/lecture2/analogy7.pdf}
-
-\end{center}
-\vspace*{\fill}
-\end{frame}
-
-
-%=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=
-\begin{frame}[fragile]{\sec}
-\vspace*{\fill}
-\begin{center} 
-A Publisher can publish to different Topics.
-
-\includegraphics[width=.8\linewidth]{figures/lecture2/analogy8.pdf}
-
-\end{center}
 \vspace*{\fill}
 \end{frame}
 
 
 
-%=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=
-\begin{frame}[fragile]{\sec}
-\vspace*{\fill}
-\begin{center} 
-A Node can be both a Publisher and a Subscriber.
-
-\includegraphics[width=.7\linewidth]{figures/lecture2/analogy9.pdf}
-
-\end{center}
-\vspace*{\fill}
-\end{frame}
-
-
-%=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=
-\subsection{Summary}
-\begin{frame}[fragile]{\secsec}
-\vspace*{\fill}
-
-{\large \mynote Summary} \doublerulefill
-
-\begin{center} 
-
-\begin{compactitem}
-\item Publishers and subscribers must work with the same Message type.
-\item The goal of Publishers is to only send Messages to Topics.
-\item The goal of Subscribers is to only receive Messages from Topics.
-\item There can be multiple Subscribers to a Topic. 
-\item There can be multiple Publishers to the same Topic.
-\item A Publisher can publish to different Topics.
-\item A Node can be both a Publisher and a Subscriber.
-\end{compactitem}
-
-\end{center}
-\vspace*{\fill}
-\end{frame}
-
-%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-\section{Running Nodes}
-\begin{frame}[fragile]{\sec}
-\vspace*{\fill}
-\begin{center} 
-
-{\large \mynote} \doublerulefill
-
-There are mainly 2 ways to run Nodes in ROS.
-
-\hrulefill
-
-\begin{compactenum}
-\item \myTool{ros2 run <package> <executable>} starts \emph{only} 1 Node.
-\item \myTool{ros2 launch <package> <launch file>} starts \emph{at least} 1 Node, include other launch files, handles arguments, set parameters, etc.
-\end{compactenum}
-\end{center}
-\vspace*{\fill}
-\end{frame}
-
-
-\subsection{ros2 run}
-\begin{frame}[fragile]{\secsec}
-\vspace*{\fill}
-\begin{center} 
-%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-
-{\large \mytodo Run only a single Node} \doublerulefill
-
-\myTool{ros2 run <package> <executable>} --  <package> is the name of a ROS package and <executable> is the name of the executable from <package>.
-
-\mynote An executable in \CC is the machine code of your program (after compiling and linking the source code). An executable in Python is a Python script (usually a \myFile{*.py} file) or a file generated from a Python script.
-
-\hrulefill
-
-\begin{compactitem}
-\item ROS Galactic comes with the package \myROSPackage{demo_nodes_cpp} installed. 
-\item This package includes a Publisher with the name \myNode{talker} and a Subscriber with the name \myNode{listener}
-\item The Publisher can be started from the executable \textit{talker} and the Subscriber can be started from the executable \textit{listener}.
-    \item In one terminal, run the Publisher with \myTerminal{ros2 run demo_nodes_cpp talker}
-    \item In a different terminal, run the Subscriber with \myTerminal{ros2 run demo_nodes_cpp listener}
-\end{compactitem}
-\end{center}
-\vspace*{\fill}
-\end{frame}
-
-
-\subsection{ros2 launch}
-\begin{frame}[fragile]{\secsec}
-\vspace*{\fill}
-\begin{center} 
-%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-
-{\large \mytodo Run a launch file} \doublerulefill
-
-\myTool{ros2 launch <package> <launch file name>} --  <package> is the name of a ROS package and <launch file name> is the name of a launch file which belongs to <package>.
-
-\hrulefill
-
-\begin{compactitem}
-\item A \urllink{https://docs.ros.org/en/foxy/Tutorials/Intermediate/Launch/Creating-Launch-Files.html}{launch file}  written in Python, XML, or YAML can start and stop different nodes as well as trigger and act on various events. 
-\item The following command will start both the Publisher and the Subscriber.
-\item[]\myTerminal{ros2 launch demo_nodes_cpp talker_listener.launch.py}
-\end{compactitem}
-
-
-
-
-\end{center}
-\vspace*{\fill}
-\end{frame}
-
-
-\section{Introspecting Nodes and Topics}
-\begin{frame}[fragile]{\sec}
-\vspace*{\fill}
-\begin{center} 
-%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-
-{\large \myinfo Introspect Nodes and Topics} \doublerulefill
-
-
-\hrulefill
-
-\begin{compactenum}
-\item \myTool{ros2 node <option> [node name]} provides different options to introspects Nodes. Some examples are:
-
-\begin{compactitem}
-\footnotesize
-\item \myTool{ros2 node list} lists all running Nodes.
-\item \myTool{ros2 node info <node name>} provides information for a given Node.
-\end{compactitem}
-
-\item \myTool{ros2 topic <option> [topic name]} provides different options to introspects Topics. Some examples are:
-\begin{compactitem}
-\footnotesize
-\item \myTool{ros2 topic list} lists all running Topics. Add the option \myTool{-t} to get the type of each Topic.
-\item \myTool{ros2 topic info <topic name>} provides information for a given Topic. Add the option \myTool{-v} for more information.
-\item \myTool{ros2 topic find <message type>} list all Topics with the given Message type.
-\item \myTool{ros2 topic echo <topic name>} displays Messages being published on <topic name>.
-\item \myTool{ros2 topic hz <topic name>} displays the frequency at which Messages are published.
-\end{compactitem}
-
-
-\item \myTool{rqt_graph} visually shows the connections between Nodes and Topics.
-\end{compactenum}
-\end{center}
-\vspace*{\fill}
-\end{frame}
-
-%%%%%%%%%%%%%%%%%%
-%   --- FRAME
-%%%%%%%%%%%%%%%%%%
-\section{ROS Workspace}
-\begin{frame}[fragile]{\sec}
-\vspace*{\fill}
-\begin{center} 
-{\large \mydefinition Workspace} \doublerulefill
-
-{\large \emph{A ROS workspace is a folder where you write all packages  needed to build a ROS2 application.}}
-
-{\large \mytodo} \doublerulefill
-
-\begin{compactitem}
-\item Create a workspace anywhere you want and give it a name of your choice.
-\item[]\myTerminal{mkdir -p \textasciitilde/enpm663_ws/src}
-\begin{compactitem}
-\item \mywarning The \myFolder{src} folder is where you will create your custom ROS packages or the ones you will clone from github.
-\end{compactitem}
-\item Build the workspace: \myTerminal{cd \textasciitilde/enpm663_ws} followed with \myTerminal{colcon build}
-\begin{compactitem}
-\item \mywarning You have to be in the root folder of the workspace to build it.
-\item \mynote The build process looks at packages inside \myFolder{src}  and build them. As of now, there is no package in \myFolder{src} but some folders are generated.
-\end{compactitem}
-\end{compactitem}
-\end{center}
-\vspace*{\fill}
-\end{frame}
-
-
-
-\begin{frame}[fragile]{\sec}
-\vspace*{\fill}
-\begin{center} 
-
-
-\begin{columns}[T]
-    \begin{column}{0.3\textwidth}
-
-\begin{forest}
-  pic dir tree,
-  pic root,
-  for tree={% folder icons by default; override using file for file icons
-    directory,
-  },
-  [\footnotesize enpm663_ws
-    [\footnotesize~src]
-    [\footnotesize~build]
-    [\footnotesize~log ]
-    [\footnotesize~install
-    % [\footnotesize\myfile{local_setup.bash}, file]
-    [\footnotesize setup.bash, file]
-    [\footnotesize ..., file]
-    ]
-
-  ]
-\end{forest}
-    \end{column}
-    
-\begin{column}{0.7\textwidth}
-\begin{compactitem}
-\small
-\item \myFolder{src} contains custom ROS packages. These packages can be the ones you created or external ones.
-\item \myFolder{build} contains the intermediate build
-products for each package. For instance, object files are created in this folder.
-\item \myFolder{log} contains log files generated during the build process.
-\item \myFolder{install} contains the final build products which can be used to run code, but relies on the presence of the source space. For instance, executable files and libraries are generated in this folder.
-\begin{compactitem}
-\item This folder contains the file \myFile{setup.bash} which you will need to source so that ROS can detect your custom packages in this workspace. 
-\item \mytodo Add the command to source this file in your \myFile{bashrc} This command must come after sourcing your ROS distribution.
-
-\end{compactitem}
-\end{compactitem}
-\end{column}
- \end{columns}
- 
- 
- 
-\end{center}
-\vspace*{\fill}
-\end{frame}
-
-
-\begin{frame}[fragile]{\sec}
-\vspace*{\fill}
-\begin{center} 
-
-
-\begin{compactitem}
-\footnotesize
-\item Edit \myFile{bashrc}
-    \begin{bashScriptListLine}
-source /opt/ros/galactic/setup.bash
-source <path_to_worspace>/install/setup.bash 
-source /usr/share/colcon_argcomplete/hook/colcon-argcomplete.bash
-source /usr/share/colcon_cd/function/colcon_cd.sh
-eval "$(register-python-argcomplete3 ros2)"
-eval "$(register-python-argcomplete3 colcon)"
-    \end{bashScriptListLine}
-
-\item Edit \myFile{zshrc}
-    \begin{bashScriptListLine}
-source /opt/ros/galactic/setup.zsh
-source <path_to_worspace>/install/setup.zsh 
-source /usr/share/colcon_argcomplete/hook/colcon-argcomplete.zsh
-source /usr/share/colcon_cd/function/colcon_cd.sh
-eval "$(register-python-argcomplete3 ros2)"
-eval "$(register-python-argcomplete3 colcon)"
-    \end{bashScriptListLine}
-    
-\end{compactitem}
-
-\end{center}
-\vspace*{\fill}
-\end{frame}
-
-
-%%%%%%%%%%%%%%%%%%
-%   --- FRAME
-%%%%%%%%%%%%%%%%%%
-\section{ROS Package}
-\begin{frame}[fragile]{\sec}
-\vspace*{\fill}
-\begin{center} 
-{\large \mydefinition Package} \doublerulefill
-
-{\emph{Software in ROS is organized in packages. A package contains anything that logically constitutes a useful module. The goal of these packages it to provide this useful functionality in an easy-to-consume manner so that software can be easily reused.}}
-
-\hrulefill
-
-\begin{compactitem}
-\footnotesize
-\item Package creation in ROS2 uses \myTool{ament} as its build system and \myTool{colcon} as its build tool. 
-\item  \myTool{ament} is an evolution of \myTool{catkin}
-\item \myTool{ament} is a meta build system to improve building applications which are split into separate packages. It consists of two major parts:
-\begin{compactitem}
-\footnotesize
-\item A build system to configure, build, and install a single package.
-\item A tool to invoke the build of individual packages in their topological order. The tool relies on meta information about the packages to determine their dependencies and their build type. This meta information is defined in a manifest file called \myFile{package.xml} which is specified in \urllink{https://www.ros.org/reps/rep-0140.html}{REP 140}.
-\end{compactitem}
-\item More information on \myTool{ament} can be found \urllink{https://design.ros2.org/articles/ament.html}{here}.
-\end{compactitem}
-\end{center}
-\vspace*{\fill}
-\end{frame}
-
-
-%%%%%%%%%%%%%%%%%%
-%   --- FRAME
-%%%%%%%%%%%%%%%%%%
-\subsection{\CC}
-\begin{frame}[fragile]{\secsec}
-\vspace*{\fill}
-\begin{center} 
-{\normalsize \mytodo Create the \CC package \myROSPackage{first_package_cpp}} \doublerulefill
-
-\begin{compactitem}
-    \small
-    \item \myreminder Packages are created in the \myFolder{src} folder of your workspace.
-\end{compactitem}
-
-
-
-
-\hrulefill
- 
-\begin{compactitem}
-\footnotesize
-\item \myTerminal{cd \textasciitilde/enpm663_ws/src}
-\item \myTerminal{ros2 pkg create first_package_cpp -{}-build-type ament_cmake -{}-dependencies rclcpp}
-\item or  \myTerminal{ros2 pkg create first_package_cpp  -{}-dependencies rclcpp}
-\item \myTerminal{cd ..}
-\item \myTerminal{colcon build}
-\item \myTerminal{source install/setup.bash} 
-
-
-\end{compactitem}
-
-\hrulefill
-
-\begin{compactitem}
-\footnotesize
-
-\item \mywarning Always source your workspace after building a new package for the first time.
-
-\item \mynote To build a specific package: \myTerminal{colcon build -{}-packages-select <package name>}
-
-\end{compactitem}
-\end{center}
-\vspace*{\fill}
-\end{frame}
-
-
-%*%*%*%*%*%*%*%*%*%*%*%*%*%*%*%*%*%*%*%*%*%*
-\begin{frame}[fragile]{\secsec}
-\vspace*{\fill}
-\begin{center} 
-
-\begin{columns}
-\begin{column}{0.6\textwidth}
-
-    \begin{itemize}
-    \footnotesize
-    \item \mydirFoot{first_package_cpp} -- This is the ROS package.
-    \item \mydirFoot{include} -- \CC header files (.hpp) are expected to be placed in this folder.
-    \item \mydirFoot{src} -- \CC source files (.cpp) are expected to be placed in this folder.
-    \item \myfileFoot{CMakeLists.txt} contains rules to generate executables, libraries, and install folders and files.
-    \item \myfileFoot{package.xml} contains meta information about the package.
-        
-        
-        
-        
-        
-    \end{itemize}
-
-\end{column}
-\begin{column}{0.4\textwidth}  %%<--- here
-\begin{forest}
-  pic dir tree,
-  pic root,
-  for tree={% folder icons by default; override using file for file icons
-    directory,
-  },
-    [\small~first_package_cpp
-     [\small~include]
-      [\small~src]
-    [\small CMakeLists.txt, file]
-    [\small package.xml, file]
-  ]
-\end{forest}
-\end{column}
-\end{columns}
-\end{center}
-\vspace*{\fill}
-\end{frame}
-
-
-%*%*%*%*%*%*%*%*%*%*%*%*%*%*%*%*%*%*%*%*%*%*
+%#####################################
 \subsection{Python}
-%*%*%*%*%*%*%*%*%*%*%*%*%*%*%*%*%*%*%*%*%*%*
-\begin{frame}[fragile]{\secsec}
+\subsubsection*{Simple Node}
+%#####################################
+\begin{frame}[fragile]{\secsecsec}
 \vspace*{\fill}
-\begin{center} 
 
-{\normalsize \mytodo Create the Python package \mypackageNormal{first_package_py}} \doublerulefill
-
-\myreminder Packages are created in \mydirNormal{\textasciitilde/enpm663_ws/src}
+{\large \mytodo Write a Python Node } \doublerulefill
 
 
-\hrulefill
- 
 \begin{compactitem}
 \small
-\item \myTerminal{cd \textasciitilde/enpm663_ws/src}
-\item \myTerminal{ros2 pkg create first_package_py -{}-build-type ament_python -{}-dependencies rclpy}
-\item \myTerminal{cd ..}
-\item \myTerminal{colcon build}
-\item \myTerminal{source install/setup.bash} 
-\end{compactitem}
-\end{center}
-\vspace*{\fill}
-\end{frame}
-
-%*%*%*%*%*%*%*%*%*%*%*%*%*%*%*%*%*%*%*%*%*%*
-\begin{frame}[fragile]{\secsec}
-\vspace*{\fill}
-\begin{center} 
-
-\begin{columns}
-\begin{column}{0.6\textwidth}
-
-    \begin{itemize}
+    \item Write a Node which simply displays a string on the standard output.
+    \begin{tabular}{ l l}
     \footnotesize
-    \item \myFolder{first_package_py} -- This is your ROS package.
-    \item \myFolder{first_package_py} -- Directory with the same name as your package. This is where you create your Nodes (Python scripts).
-    \item \myFolder{resource} -- Folder which contains an empty file, with the same name as your package. In order to detect that a package is installed, ROS2 needs to install a marker file, which is the empty file inside \myFolder{resource}
-    \item \myFolder{test} -- Folder which contains files to run test for your package.
-        \item \myFile{package.xml} contains meta information about the package.
-        \item \myFile{setup.py} contains instructions for how to install the package.
-        \begin{itemize}
-        \scriptsize
-            \item \mynote Each time you add a Node in your package you need to edit this file.
-        \end{itemize}
-        \item \myFile{setup.cfg} is required when a package has executables, so \myTool{ros2 run} can find them.
-        
-        
-        
-    \end{itemize}
+    {\footnotesize Package} & \myROSPackage{first_package_py} \\
+    {\footnotesize File} & \myFile{first_node.py} \\
+    {\footnotesize Node} & \myNode{first_node_py} \\
+    \end{tabular} 
+    \item Edit \myFile{setup.py}
+\begin{pyscript}
+entry_points={
+    'console_scripts': [
+        'first_node_py = first_package_py.first_node:main'
+    ],
+},
+\end{pyscript}
+\item Build the package: \myTerminal{colcon build -{}-packages-select first_package_py}
+\item Run the Node: \myTerminal{ros2 run first_package_py first_node_py}
+\begin{compactitem}
+    \item[] \mywarning The argument \myTerminalBlank{first_node_py} is from the name  provided in \myFile{setup.py}
+\end{compactitem}
+\item Inspect the Node: \myTerminal{ros2 node info /first_node_py}
+\item \mytodo Create another script \myFile{second_node.py} in the same package as an exercise.
+\end{compactitem}
 
-\end{column}
-\begin{column}{0.4\textwidth}  %%<--- here
-\begin{forest}
-  pic dir tree,
-  pic root,
-  for tree={% folder icons by default; override using file for file icons
-    l sep=5mm,
-    l=0,
-    directory,
-  },
-  [\scriptsize first_pkg_py 
-    [\scriptsize~first_pkg_py
-    [\scriptsize __init__.py, file]
-    ]
-    [\scriptsize~resource]
-    [\scriptsize~test]
-    [\scriptsize~package.xml, file]
-    [\scriptsize~setup.py, file]
-    [\scriptsize~setup.cfg, file]
-    ]
-\end{forest}
-\end{column}
-\end{columns}
-\end{center}
+
 \vspace*{\fill}
 \end{frame}
 
 
-%*%*%*%*%*%*%*%*%*%*%*%*%*%*%*%*%*%*%*%*%*%*
-\subsection{Notes}
-%*%*%*%*%*%*%*%*%*%*%*%*%*%*%*%*%*%*%*%*%*%*
-\begin{frame}[fragile]{\secsec}
+\subsubsection*{Publisher}
+%#####################################
+\begin{frame}[fragile]{\secsecsec}
 \vspace*{\fill}
-\begin{center} 
 
-{\large \mynote Python Packages} \doublerulefill
-
-\begin{itemize}
-    \item You can execute Python Nodes without building the Python package. However, when a package is built, colcon installs the Python scripts in a place where they can find other modules from other packages, where they can be found by other scripts. It will also allow you to start a node with \myTool{ros2 run}, add it in a launch file, pass parameters to it, etc.
-    \item When \myTerminal{colcon build -{}-symlink-install} is used, building a Python package again is not required after editing a Python script.
-\end{itemize}
-
-\end{center}
-\vspace*{\fill}
-\end{frame}
-
-
-
-
-%%%%%%%%%%%%%%%%%%
-%   --- CPP and PYTHON 
-%%%%%%%%%%%%%%%%%%
-\subsection{\CC and Python}
-\begin{frame}[fragile]{\secsec}
-\vspace*{\fill}
-\begin{center} 
-
-
-{\normalsize \mytodo Create a package for both \CC and  Python:~ \myROSPackage{first_package}} \doublerulefill
-
-\hrulefill
+{\footnotesize \mytodo Write a Publisher }\doublerulefill
 
 \begin{compactitem}
+\small
+    \item Write a Publisher which publishes a string every second.  
+    
+    \begin{tabular}{l l}
     \footnotesize
-    \item To create a package which will contain both \CC and Python Nodes you first need to create a \CC package and then add folders and files to create a Python package.
+    {\footnotesize Package} & \myROSPackage{first_package_py} \\
+    {\footnotesize File} & \myFile{publisher_py.py} \\
+    {\footnotesize Topic} & \myTopic{my_chatter} \\
+    {\footnotesize Node} & \myNode{publisher_py} \\
+    {\footnotesize Message} & \myMessage{example_interfaces/msg/String} \\
+    \end{tabular} 
+
+    
+    \item Edit \myFile{setup.py}
+\begin{pyscript}
+entry_points={
+    'console_scripts': [
+        'first_node_py = first_package_py.first_node:main',
+        'publisher_py = first_package_py.publisher_py:main',
+    ],
+},
+\end{pyscript}
+\item Build the package: \myTerminal{colcon build -{}-packages-select first_package_py}
+\item Run the Node: \myTerminal{ros2 run first_package_py publisher_py}
+\item Introspect with \myTool{rqt_graph}
 \end{compactitem}
-\begin{compactenum}
-    \footnotesize
-    \item Create a standard \CC package:
-    \item[] \myTerminal{ros2 pkg create first_package -{}-build-type ament_cmake -{}-dependencies rclcpp rclpy}
-    \item Create a Python package:
-    \item[] \myTerminal{cd <path to first_package>}
-    \item[] \myTerminal{mkdir first_package} -- This folder has the same name as the package. Python modules that need to be imported will be placed in this folder.
-    \item[] \myTerminal{touch first_package/__init__.py} 
-    \item[] \myTerminal{mkdir nodes} -- Python nodes will be placed in this folder.
-\end{compactenum}
 
-\hrulefill
 
-{\normalsize \myreminder For this course you will need a package for \CC and Python Nodes}
-\end{center}
 \vspace*{\fill}
 \end{frame}
 
 
-
-
-\begin{frame}[fragile]{\secsec}
+%#####################################
+\begin{frame}[fragile]{\secsecsec}
 \vspace*{\fill}
-\begin{center} 
 
-\begin{forest}
-  pic dir tree,
-  pic root,
-  for tree={% folder icons by default; override using file for file icons
-    directory,
-  },
-    [\small~first_package
-    [\small~first_package
-    [\small __init__.py, file]
-    ]
-    [\small~nodes]
-     [\small~include]
-      [\small~src]
-    [\small CMakeLists.txt, file]
-    [\small package.xml, file]
-  ]
-\end{forest}
-\end{center}
-\vspace*{\fill}
-\end{frame}
+{\footnotesize \bf \mycodesyntax \raleway  Code Explanation}\doublerulefill
 
-%%%%%%%%%%%%%%%%%%
-%   --- FRAME
-%%%%%%%%%%%%%%%%%%
-\begin{frame}[fragile]{\sec}
-\vspace*{\fill}
-\begin{center} 
-
-The tool \myTool{ros2 pkg list} provides a list of all visible package.
-
-{\large \mytodo} \doublerulefill
-
-Check the packages we created in this class are listed.
 \begin{compactitem}
-\item \myTerminal{ros2 pkg list | grep first_package}
+\begin{pyscript}
+self._publisher = self.create_publisher(String, 'my_chatter', 10)
+\end{pyscript}
+\begin{compactitem}
+\item \urllink{https://docs.ros2.org/latest/api/rclpy/api/node.html\#rclpy.node.Node.create_publisher}{\pscript{create_publisher()}} constructs a Publisher object. 
+\begin{compactitem}
+    \item \pscript{String} is the type of the Message.
+    \item \pscript{'my_chatter'} is the Topic to which the Publisher will publish Messages.
+    \item \pscript{10} is the queue size: 10 Messages will be buffered before they are processed.
 \end{compactitem}
+\end{compactitem}
+
+
+\begin{pyscript}
+self._timer = self.create_timer(2, self.timer_callback)
+\end{pyscript}
+\begin{compactitem}
+    \item \urllink{https://docs.ros2.org/latest/api/rclpy/api/node.html\#rclpy.node.Node.create_timer}{\pscript{create_timer()}} calls the  function \pscript{timer_callback()} every 2 seconds.
+\begin{pyscript}
+def timer_callback(self):
+    self._msg.data = 'Help me Obi-Wan Kenobi, you are my only hope.'
+    self._publisher.publish(self._msg)
+    self.get_logger().info('Publishing: "%s"' % self._msg.data)
+\end{pyscript}
+\item \pscript{self._msg.data}: A value for the field \pscript{data} for the Message type \pscript{String} is provided.
+\item \pscript{self._publisher.publish(self._msg)} publishes the Message to the topic.
+\end{compactitem}
+\end{compactitem}
+\vspace*{\fill}
+\end{frame}
+
+
+%#####################################
+\begin{frame}[fragile]{\secsecsec}
+\vspace*{\fill}
+\begin{center} 
+
+{\footnotesize \bf \mytodo \raleway  Edit package.xml}\doublerulefill
+
+\begin{mdframed}
+\raleway
+\footnotesize
+
+Since you imported \mypackageScript{example_interfaces} in your code, you need to add this dependency in \myfileScript{package.xml}
+
+Any time you import a ROS package you also have to add it to \myfileScript{package.xml}
+\end{mdframed}
+
+\begin{xmlscript}
+<depend>example_interfaces</depend>
+\end{xmlscript}
+
+
 
 \end{center}
 \vspace*{\fill}
 \end{frame}
 
-%%%%%%%%%%%%%%%%%%
-%   --- FRAME
-%%%%%%%%%%%%%%%%%%
-\subsection{Package Manifest}
-\begin{frame}[fragile]{\secsec}
+%#####################################
+\subsubsection*{Subscriber}
+%#####################################
+\begin{frame}[fragile]{\secsecsec}
+\vspace*{\fill}
+
+{\footnotesize \bf \mytodo \raleway  Write a Subscriber}\doublerulefill
+
+\begin{compactitem}
+\small
+    \item Write a Subscriber.
+
+       \begin{tabular}{l l}
+    \footnotesize
+    {\raleway \scriptsize Package} & \mypackageScript{first_package_py} \\
+    {\raleway \scriptsize File} & \myfileScript{subscriber_py.py} \\
+    {\raleway \scriptsize Topic} & \mytopicScript{chatter663} \\
+    {\raleway \scriptsize Node} & \mynodeScript{subscriber_py} \\
+    {\raleway \scriptsize Message} & \mymessageScript{example_interfaces/msg/String} \\
+    \end{tabular} 
+    
+    \item Edit \myfileScript{setup.py}
+\begin{pyscript}
+entry_points={
+    'console_scripts': [
+        'first_node_py = first_package_py.first_node:main',
+        'publisher_py = first_package_py.publisher_py:main',
+        'subscriber_py = first_package_py.subscriber_py:main',
+    ],
+},
+\end{pyscript}
+\item Build the package: \myterminalScript{colcon build -{}-packages-select first_package_py}
+\item Run the Publisher: \myterminalScript{ros2 run first_package_py publisher_py}
+\item Run the Subscriber: \myterminalScript{ros2 run first_package_py subscriber_py}
+\item Introspect with \mytoolScript{rqt_graph}
+\end{compactitem}
+
+
+\vspace*{\fill}
+\end{frame}
+
+
+%#####################################
+\begin{frame}[fragile]{\secsecsec}
+\vspace*{\fill}
+
+{\footnotesize \bf \mycodesyntax \raleway  Code Explanation}\doublerulefill
+
+\begin{compactitem}
+\begin{pyscript}
+self._subscriber = self.create_subscription(String, 'chatter663', 
+self.subscriber_callback, 10)
+\end{pyscript}
+\begin{compactitem}
+\item \urllink{https://docs.ros2.org/latest/api/rclpy/api/node.html#rclpy.node.Node.create_subscription}{\pscript{create_subscription()}} creates a new subscription to a Topic. 
+\begin{compactitem}
+    \item \pscript{String} is the type of the Message to retrieve.
+    \item \pscript{'chatter663'} is the Topic to listen to.
+    \item \pscript{subscriber_callback} is the function to call whenever a Message is published to \pscript{'chatter663'}.
+    \item \pscript{10} is the queue size: 10 Messages will be buffered before they are  processed.
+\end{compactitem}
+\end{compactitem}
+\begin{pyscript}
+def subscriber_callback(self, msg):
+        self.get_logger().info('Receiving: "%s"' % msg.data)
+\end{pyscript}
+\begin{compactitem}
+    \item This function unpacks the Message and prints the value for the field \pscript{data} on the standard output.
+\end{compactitem}
+\end{compactitem}
+\vspace*{\fill}
+\end{frame}
+
+
+%#####################################
+\subsection{\CC}
+\subsubsection*{Simple Node}
+%#####################################
+\begin{frame}[fragile]{\secsecsec}
+\vspace*{\fill}
+
+{\footnotesize \bf \mytodo \raleway  Write a \CC Node}\doublerulefill
+
+\begin{compactitem}
+\small
+    \item Write a Node which simply displays a string on the standard output.
+
+    \begin{tabular}{ l l}
+    \footnotesize
+    {\raleway \scriptsize Package} & \mypackageScript{first_package_cpp} \\
+    {\raleway \scriptsize File} & \myfileScript{first_node_cpp.cpp} \\
+    {\raleway \scriptsize Node} & \mynodeScript{first_node_cpp} \\
+    {\raleway \scriptsize Executable} & \myfileScript{first_node_cpp} \\
+    \end{tabular} 
+    
+    \item Edit \myfileScript{CMakeLists.txt} to generate the executable \myfileScript{first_node_cpp}
+\item Build the package: \myterminalScript{colcon build -{}-packages-select first_package_cpp}
+\item Run the Node: \myterminalScript{ros2 run first_package_cpp first_node_cpp}
+\begin{compactitem}
+    \item[] \mywarning The argument \LightTermScript{first_node_cpp} is the executable generated from compilation.
+\end{compactitem}
+\item Inspect the Node: \myterminalScript{ros2 node info /first_node_cpp}
+\end{compactitem}
+\vspace*{\fill}
+\end{frame}
+
+
+%#####################################
+\begin{frame}[fragile]{\secsecsec}
+\vspace*{\fill}
+
+{\footnotesize \bf \mycodesyntax \raleway  Code Explanation}\doublerulefill
+
+\begin{compactitem}
+\begin{cppscript}
+auto node = std::make_shared<rclcpp::Node>("first_node_cpp");
+\end{cppscript}
+\begin{compactitem}
+\item \mscript{rclcpp::Node} object is initialized as a shared pointer. The name of the Node is passed to the constructor.
+\end{compactitem}
+\end{compactitem}
+\vspace*{\fill}
+\end{frame}
+
+
+%#####################################
+\subsubsection*{Build Script}
+\begin{frame}[fragile]{\secsecsec}
 \vspace*{\fill}
 \begin{center} 
-{\large \mynote} \doublerulefill
+{\footnotesize \bf \mycodesyntax \raleway  CMakeLists.txt}\doublerulefill
 
-{\large The package manifest \myFile{package.xml} must be included with any
-ROS-compliant package's root folder.}
+\begin{mdframed}
+\footnotesize
+\raleway
+\myfileScript{CMakeLists.txt} is used by \mytoolScript{ament\_cmake} to build \CC executables, shared libraries (e.g., Gazebo plugins), and to install files in the folder \mydirScript{install}
+\end{mdframed}
 
-\hrulefill
  
+% \begin{compactitem}
+% \item \mytodo Take a look at the \urllink{https://docs.ros.org/en/foxy/How-To-Guides/Ament-CMake-Documentation.html}{documentation} for \mytoolSmall{ament_cmake}
 \begin{compactitem}
-\item The package manifest has at least 3 purposes:
-\begin{compactenum}
-\item \myTool{ament} makes use of the manifest to build the dependency tree to determine build order. \item The manifest is used to install missing packages:
-\begin{compactitem}
-\item \myTerminal{cd \textasciitilde/ros2_ws}
-\item \myTerminal{rosdep install -{}-from-paths ./src -{}-ignore-packages-from-source -y}
+\item \textcolor{black}{\texttt{cmake_minimum_required(VERSION 3.8)}} informs about the minimum version of \mytoolfoot{cmake} required to work with this file.
+\item The argument to \textcolor{black}{\texttt{project()}} will be the package name and must be identical to the package name in the \myfileFoot{package.xml}. 
+\item The project setup is done by \texttt{ament_package()} and this call must occur exactly once per package (more information \urllink{https://docs.ros.org/en/foxy/How-To-Guides/Ament-CMake-Documentation.html}{here}). 
+\item \mynote We need to edit this file once we create a Node in this package.
+\end{compactitem}
 
-\end{compactitem}
-\item Information on packages released to the ROS community is pulled from this file (see example with  \urllink{https://index.ros.org/p/rclcpp/#galactic-deps}{rclcpp}).
-\end{compactenum}
-\item \mynote If you are planning to release a ROS package to the community, edit \myFile{package.xml} with the correct information.
-\end{compactitem}
 \end{center}
 \vspace*{\fill}
 \end{frame}
 
 
-%%%%%%%%%%%%%%%%%%
-%   --- FRAME
-%%%%%%%%%%%%%%%%%%
-% \subsection{Build Script}
-% \begin{frame}[fragile]{\secsec}
-% \vspace*{\fill}
-% \begin{center} 
-% {\large \mynote} \doublerulefill
-
-% {\large \myfileNormal{CMakeLists.txt} is used by \mytoolNormal{ament\_cmake} to build \CC executables, shared libraries (e.g., Gazebo plugins), and to install files in the folder \mydirNormal{install}}
-
-% \hrulefill
- 
-% % \begin{compactitem}
-% % \item \mytodo Take a look at the \urllink{https://docs.ros.org/en/foxy/How-To-Guides/Ament-CMake-Documentation.html}{documentation} for \mytoolSmall{ament_cmake}
-% \begin{compactitem}
-% \item \textcolor{black}{\texttt{cmake_minimum_required(VERSION 3.8)}} informs about the minimum version of \mytoolSmall{cmake} required to work with this file.
-% \item The argument to \textcolor{black}{\texttt{project()}} will be the package name and must be identical to the package name in the \myfileSmall{package.xml}. 
-% \item The project setup is done by \textcolor{black}{\texttt{ament_package()}} and this call must occur exactly once per package (more information \urllink{https://docs.ros.org/en/foxy/How-To-Guides/Ament-CMake-Documentation.html}{here}). 
-% \item \mynote We need to edit this file once we create a Node in this package.
-% \end{compactitem}
-
-% \end{center}
-% \vspace*{\fill}
-% \end{frame}
+%#####################################
+\begin{frame}[fragile]{\secsecsec}
+\vspace*{\fill}
+\begin{center} 
+{\footnotesize \bf \mytodo \raleway  Edit CMakeLists.txt}\doublerulefill
 
 
-%%%%%%%%%%%%%%%%%%
-%   --- FRAME
-%%%%%%%%%%%%%%%%%%
-% \subsection{ROS Node}
-% \begin{frame}[fragile]{\secsec}
-% \vspace*{\fill}
-% \begin{center} 
-% {\large \mytodo} \doublerulefill
+\begin{cmakescript}
+cmake_minimum_required(VERSION 3.8)
+project(first_package_cpp)
 
-% {\large In the package \mypackageNormal{first_package} write a Node \mynodeNormal{hello} which prints ``Hello" in the terminal.}
+if(CMAKE_COMPILER_IS_GNUCXX OR CMAKE_CXX_COMPILER_ID MATCHES "Clang")
+  add_compile_options(-Wall -Wextra -Wpedantic)
+endif()
 
-% \hrulefill
-
-% \begin{compactenum}
-% \item Write a Node.
-% \begin{compactitem}
-% \item Create \myfileSmall{main.cpp} in \mydirSmall{first_package/src}
-% \item Write the code for the Node in \myfileSmall{main.cpp}
-% \item Edit \myfileSmall{CMakeLists.txt} to build and install the executable.
-% \end{compactitem}
-% \item Build the executable.
-% \begin{compactitem}
-% \item \myterminalSmall{cd \textasciitilde/ros2_ws}
-% \item \myterminalSmall{colcon build -{}-packages-select first_package}
-% \item \myterminalSmall{source \textasciitilde/ros2_ws/install/setup.bash} 
-% \end{compactitem}
-
-% \item Run the Node.
-% \begin{compactitem}
-% \item \mynote You can run a Node from anywhere on your system, there is no need to be in the workspace.
-% % \item \mytoolSmall{ros2 run <package> <executable>}
-% \item \myterminalSmall{ros2 run first_package hello}
-% \end{compactitem}
-% \end{compactenum}
-% \end{center}
-% \vspace*{\fill}
-% \end{frame}
+# find dependencies
+find_package(ament_cmake REQUIRED)
+find_package(rclcpp REQUIRED)
 
 
+add_executable(first_node_cpp src/first_node_cpp.cpp)
+ament_target_dependencies(first_node_cpp rclcpp)
+
+install(TARGETS
+first_node_cpp
+DESTINATION lib/${PROJECT_NAME}
+)
+
+install(DIRECTORY include DESTINATION share/${PROJECT_NAME})
+
+ament_package()
+\end{cmakescript}
+
+\end{center}
+\vspace*{\fill}
+\end{frame}
+
+\subsubsection*{Publisher}
+%#####################################
+\begin{frame}[fragile]{\secsecsec}
+\vspace*{\fill}
+
+{\footnotesize \bf \mytodo \raleway  Write a Publisher}\doublerulefill
+
+\begin{compactitem}
+\small
+    \item Write a Publisher which publishes a string every second.  
+    
+    \begin{tabular}{l l}
+    \footnotesize
+    {\raleway \scriptsize Package} & \mypackageScript{first_package_cpp} \\
+    {\raleway \scriptsize File} & \myfileScript{publisher_cpp.cpp/.hpp} \\
+    {\raleway \scriptsize Topic} & \mytopicScript{chatter663} \\
+    {\raleway \scriptsize Node} & \mynodeScript{publisher_cpp} \\
+    {\raleway \scriptsize Message} & \mymessageScript{example_interfaces/msg/String} \\
+    {\raleway \scriptsize Executable} & \myfileScript{publisher_cpp} \\
+    \end{tabular} 
+
+    
+    \item Edit \myfileScript{CMakeLists.txt} to generate the executable \myfileScript{publisher_cpp}
+\item Build the package: \myterminalScript{colcon build -{}-packages-select first_package_cpp}
+\item Run the Node: \myterminalScript{ros2 run first_package_cpp publisher_cpp}
+\item Introspect with \mytoolScript{rqt_graph}
+\end{compactitem}
+\vspace*{\fill}
+\end{frame}
+
+
+%#####################################
+\begin{frame}[fragile]{\secsecsec}
+\vspace*{\fill}
+
+{\footnotesize \bf \mycodesyntax \raleway  Code Explanation}\doublerulefill
+
+\begin{compactitem}
+\begin{cppscript}
+publisher_ = this->create_publisher<example_interfaces::msg::String>("chatter663", 10);
+\end{cppscript}
+\begin{compactitem}
+\item Create a Publisher to publish \mymessageScript{example_interfaces/msg/String} to \mytopicScript{chatter663}
+\end{compactitem}
+\begin{cppscript}
+timer_ = this->create_wall_timer(std::chrono::milliseconds((int)(1000.0)), 
+        std::bind(&PublisherNode::timer_callback, this));
+\end{cppscript}
+\begin{compactitem}
+\item Call the function \mscript{timer_callback} every 1 second (1000 ms).
+\item \mscript{timer_callback} fills out the Message and publish it.
+\end{compactitem}
+\end{compactitem}
+\vspace*{\fill}
+\end{frame}
+
+%#####################################
+\subsubsection*{Callback}
+%#####################################
+\begin{frame}[fragile]{\secsecsec}
+\vspace*{\fill}
+
+{\footnotesize \bf \mydefinition \raleway  Callback}\doublerulefill
+
+\begin{mdframed}
+\raleway
+\footnotesize
+A callback function is a function \mfoot{f} passed as argument to a function \mfoot{g}: \mfoot{g(f)}
+\end{mdframed}
+
+
+
+\begin{compactitem}
+\footnotesize
+\item You plan to call some function \mscript{g}, and at runtime you need it to invoke another function \mscript{f}. 
+\item However, you cannot simply hardcode the name of \mscript{f} within \mscript{g}. 
+\item \mscript{f} may not be known definitively at compile time, or perhaps \mscript{g} belongs to a third-party API that you cannot change and recompile.
+\end{compactitem}
+
+{\footnotesize \bf \mydefinition \raleway  Pass a Callback to a Function}\doublerulefill
+
+\begin{mdframed}
+\raleway
+\footnotesize
+To pass a callback function \mscript{f} to a function \mscript{g}, we can pass the address of \mscript{f} to \mscript{g} (i.e., a pointer to \mscript{f}) or use a lambda expression.
+\end{mdframed}
+
+\vspace*{\fill}
+\end{frame}
+
+
+%#####################################
+\begin{frame}[fragile]{\secsecsec}
+\vspace*{\fill}
+
+\begin{cppscriptII}
+#include <iostream>
+#include <functional> // needed for std::function
+
+// callback function
+int add(int x, int y) {
+    return x + y;
+}
+
+// callback function
+int multiply(int x, int y) {
+    return x * y;
+}
+
+int caller(int x, int y, int (*func)(int, int)) {
+    return func(x, y);
+}
+
+// with std::function
+//int caller(int x, int y, std::function<int(int, int)> func) {
+//     return func(x, y);
+//}
+
+int main() {
+    std::cout << caller(20, 10, &add) << '\n';
+    std::cout << caller(20, 10, &multiply) << '\n';
+}
+\end{cppscriptII}
+
+\vspace*{\fill}
+\end{frame}
+
+
+%#####################################
+\begin{frame}[fragile]{\secsecsec}
+\vspace*{\fill}
+
+{\footnotesize \bf \mydefinition \raleway  \mfoot{create_wall_timer()}}\doublerulefill
+
+\begin{mdframed}
+\raleway
+\footnotesize
+The method \mfoot{create_wall_timer()} takes 2 required arguments: 1) Time interval between triggers of the callback, and 2) an object returned by \mfoot{std::bind()}.
+
+\begin{cppscript}
+this->create_wall_timer(std::chrono::milliseconds((int)(1000.0)),
+    std::bind(&PublisherNode::timer_callback, 
+    this));
+\end{cppscript}
+\end{mdframed}
 
 
 
 
-% %%%%%%%%%%%%%%%%%%
-% %   --- FRAME
-% %%%%%%%%%%%%%%%%%%
 
-% \begin{frame}[fragile]{\secsec}
-% \vspace*{\fill}
-% \begin{center} 
-% {\large \mynote rclcpp} \doublerulefill
+\begin{compactitem}
+\item \mfoot{create_wall_timer()} invokes \mfoot{std::bind()} in a loop at the specified interval. If period is 1, \mfoot{std::bind()}  is invoked every second, if period is 2,  \mfoot{std::bind()}  is invoked every 2 seconds, etc.
+\item A pointer to the callback method is not passed to \mfoot{create_wall_timer()} but it is passed to  \mfoot{std::bind()}. In other words, \mfoot{std::bind()} is our function \mfoot{caller()} from the previous slide. 
+\end{compactitem}
+\vspace*{\fill}
+\end{frame}
 
-% \begin{compactitem}
-% \item \mfoot{rclcpp::init(argc, argv)} initializes any global resources needed by the middleware and the client library, as well as doing client library related command line argument parsing. 
-% \item \mfoot{rclcpp::shutdown()} causes all Nodes and their constituent parts to become invalid and shutdown. It also destroys any global resources created when \mfoot{rclcpp::init(argc, argv)}  was originally called.
-% \begin{compactitem}
-% \item By default \mfoot{rclcpp} also installs a SIGINT handler which will detect \mykbFoot{ctrl-c} and automatically shut down for you. 
-% \end{compactitem}
-% \item See \urllink{https://docs.ros2.org/alpha8/rclcpp_cpp_client_library_overview.html#shutdown-and-reinitialization}{Documentation} for \mytoolSmall{rclcpp}
-% \end{compactitem}
+%#####################################
+\begin{frame}[fragile]{\secsecsec}
+\vspace*{\fill}
 
-% \end{center}
-% \vspace*{\fill}
-% \end{frame}
+{\footnotesize \bf \mydefinition \raleway  \mfoot{std::bind()}}\doublerulefill
+
+\begin{mdframed}
+\raleway
+\footnotesize
+\mfoot{std::bind(callback, args)} generates a forwarding call wrapper for the callback function. Calling this wrapper is equivalent to invoking the callback function with some of its arguments bound to \mfoot{args}.
+\end{mdframed}
+
+\begin{compactitem}
+\item Each argument of \mfoot{args} may either be bound to a value or be a placeholder:
+\begin{compactitem}
+\item If bound to a value, calling the returned function object will always use that value as argument.
+\item If a placeholder, calling the returned function object forwards an argument passed to the call (the one whose order number is specified by the placeholder).
+\end{compactitem}
+\end{compactitem}
+\vspace*{\fill}
+\end{frame}
+
+%#####################################
+\begin{frame}[fragile]{\secsecsec}
+\vspace*{\fill}
+
+\begin{cppscriptII}
+#include <iostream>
+#include <functional>
+
+// callback function
+int subtract(int x, int y) {
+    return x - y;
+}
+
+// callback function
+int return_one(){
+    return 1;
+}
+
+int main() {
+    auto f = std::bind(&return_one); //f is a wrapper
+    std::cout << f() << '\n'; //1
+    
+    auto g = std::bind(&subtract, 10,  std::placeholders::_1); //g is a wrapper
+    std::cout << g(3) << '\n'; //x is already set to 10, here we assign 3 to y
+
+    auto h = std::bind(&subtract, std::placeholders::_1, 3); //h is a wrapper
+    std::cout << h(10) << '\n'; //y is already set to 3, here we assign 10 to x
+    
+    auto i = std::bind(&subtract, std::placeholders::_1, std::placeholders::_2); //i is a wrapper
+    std::cout << i(10, 3) << '\n'; //we set x to 10 and y to 3
+}
+\end{cppscriptII}
+
+\vspace*{\fill}
+\end{frame}
+
+%#####################################
+\begin{frame}[fragile]{\secsecsec}
+\vspace*{\fill}
+
+{\footnotesize \bf \mynote \raleway  Summary}\doublerulefill
+
+\begin{mdframed}
+\raleway
+\footnotesize
+\begin{cppscript}
+this->create_wall_timer(std::chrono::milliseconds((int)(1000.0)),
+    std::bind(&PublisherNode::timer_callback, 
+    this));
+\end{cppscript}
+\end{mdframed}
+
+\begin{compactenum}
+
+\item \mfoot{std::bind(&PublisherNode::timer_callback, this)} generates a wrapper for the method \mfoot{PublisherNode::timer_callback()}. The difference with the code from the previous slide is that this wrapper is not  stored in a variable (e.g., \mfoot{f}, \mfoot{g}, \mfoot{h}, and \mfoot{i} from the previous slide) and we are not explicitly calling this wrapper.  
+% The wrapper generated from \mfoot{std::bind(&Robot::timer_callback, this)} will be directly called by \mfoot{create_wall_timer}.
+\item \mfoot{create_wall_timer()} calls the wrapper every second in a loop. Since \mfoot{PublisherNode::timer_callback()} does not take any parameter, we are not providing any argument in this case (similar to the function \mfoot{return_one()} from the previous slide).
+\begin{compactitem}
+\item \mynote The keyword \mfoot{this} is used so the binding applies to the current object of the class \mfoot{PublisherNode}.
+\end{compactitem}
+\end{compactenum}
+\vspace*{\fill}
+\end{frame}
+
+%#####################################
+\subsubsection*{Build Scripts}
+\begin{frame}[fragile]{\secsecsec}
+\vspace*{\fill}
+\begin{center} 
+{\footnotesize \bf \mytodo \raleway  Edit CMakeLists.txt}\doublerulefill
 
 
-% %%%%%%%%%%%%%%%%%%
-% %   --- FRAME
-% %%%%%%%%%%%%%%%%%%
+\begin{cmakescript}
+find_package(example_interfaces REQUIRED) 
 
-% \subsubsection*{ROS Logging}
+add_executable(first_node_cpp src/first_node_cpp.cpp)
+ament_target_dependencies(first_node_cpp rclcpp)
+
+add_executable(publisher_cpp src/publisher_cpp.cpp)
+ament_target_dependencies(publisher_cpp rclcpp example_interfaces)
+
+install(TARGETS
+first_node_cpp 
+publisher_cpp
+DESTINATION lib/${PROJECT_NAME}
+)
+
+\end{cmakescript}
+
+{\footnotesize \bf \mytodo \raleway  Edit package.xml}\doublerulefill
+
+\begin{xmlscript}
+<depend>example_interfaces</depend>
+\end{xmlscript}
+
+
+\end{center}
+\vspace*{\fill}
+\end{frame}
+
+%#####################################
 % \begin{frame}[fragile]{\secsecsec}
 % \vspace*{\fill}
-% \begin{center} 
-% {\large \mynote ROS Logging} \doublerulefill
+
+% {\footnotesize \bf \mycodesyntax \raleway  Code Explanation}\doublerulefill
 
 % \begin{compactitem}
-% \item Although \mfoot{std::cout} works in ROS, it is not the appropriate way to print messages in the terminal.
-% \item ROS uses a \urllink{https://docs.ros.org/en/foxy/Concepts/About-Logging.html}{logging} mechanism with different severity levels. 
-% \item Each Node has a logger associated with it that automatically includes the Node's name and namespace. 
-% \item The logging subsystem in ROS2 aims to deliver logging messages to a variety of targets, including:
+% \begin{cppscript}
+% publisher_ = this->create_publisher<std_msgs::msg::String>("chatter663", 10);
+% \end{cppscript}
 % \begin{compactitem}
-% \item To the terminal.
-% \item To log files on disk, located in \mydirSmall{\textasciitilde/.ros/log}
-% \item To the Topic \mytopicSmall{/rosout}
+% \item Create a Publisher to publish \mymessageScript{std_msgs/msg/String} to \mytopicScript{chatter663}
 % \end{compactitem}
-
+% \begin{cppscript}
+% timer_ = this->create_wall_timer(std::chrono::milliseconds((int)(1000.0)), 
+%         std::bind(&PublisherNode::timer_callback, this));
+% \end{cppscript}
+% \begin{compactitem}
+% \item Call the function \mscript{timer_callback} every 1 second (1000 ms).
+% \item \mscript{timer_callback} fills out the Message and publish it.
 % \end{compactitem}
-
-% \end{center}
+% \end{compactitem}
 % \vspace*{\fill}
 % \end{frame}
 
-% \begin{frame}[fragile]{\secsecsec}
-% \vspace*{\fill}
-% \begin{center} 
-% {\large \mynote ROS Logging} \doublerulefill
 
-% \begin{compactitem}
-% \item The different severity levels in ROS are:
-% \begin{compactitem}
-% \item \mfoot{DEBUG}: This severity level should only be used during debugging. It should not be used in the released version of the package (it should not be used in submitted assignments).
-% \item \mfoot{INFO}: Small amounts of information that may be useful to a user.
-% \item \mfoot{WARN}: Information that the user may find alarming, and may affect the output of
-% the application, but is part of the expected working of the system (e.g., ``robot too close to human").
-% \item \mfoot{ERROR}: Something serious (but recoverable) has gone wrong (e.g., ``robot controllers shut down temporarily").
-% \item \mfoot{FATAL}: Something unrecoverable has happened (e.g., ``the world just imploded").
-% \end{compactitem}
-% \item Each severity level can be used with 14 different functions.
-% \end{compactitem}
+\subsubsection*{Subscriber}
+%#####################################
+\begin{frame}[fragile]{\secsecsec}
+\vspace*{\fill}
 
-% \end{center}
-% \vspace*{\fill}
-% \end{frame}
+{\footnotesize \bf \mytodo \raleway  Write a Subscriber}\doublerulefill
+
+\begin{compactitem}
+\small
+    \item Write a Subscriber.  
+    
+    \begin{tabular}{l l}
+    \footnotesize
+    {\raleway \scriptsize Package} & \mypackageScript{first_package_cpp} \\
+    {\raleway \scriptsize File} & \myfileScript{subscriber_cpp.cpp/.hpp} \\
+    {\raleway \scriptsize Topic} & \mytopicScript{chatter663} \\
+    {\raleway \scriptsize Node} & \mynodeScript{subscriber_cpp} \\
+    {\raleway \scriptsize Message} & \mymessageScript{example_interfaces/msg/String} \\
+    {\raleway \scriptsize Executable} & \myfileScript{subscriber_cpp} \\
+    \end{tabular} 
+
+    
+    \item Edit \myfileScript{CMakeLists.txt} to generate the executable \myfileScript{subscriber_cpp}
+\item Build the package: \myterminalScript{colcon build -{}-packages-select first_package_cpp}
+\item Run the Node: \myterminalScript{ros2 run first_package_cpp publisher_cpp}
+\item Run the Node: \myterminalScript{ros2 run first_package_cpp subscriber_cpp}
+\item Introspect with \mytoolScript{rqt_graph}
+\end{compactitem}
+\vspace*{\fill}
+\end{frame}
+
+
+%#####################################
+\begin{frame}[fragile]{\secsecsec}
+\vspace*{\fill}
+
+{\footnotesize \bf \mycodesyntax \raleway  Code Explanation}\doublerulefill
+
+\begin{compactitem}
+\begin{cppscript}
+subscriber_ = this->create_subscription<example_interfaces::msg::String>("chatter663", 
+10, std::bind(&SubscriberNode::chatter_callback, this, 
+std::placeholders::_1));
+\end{cppscript}
+\begin{compactitem}
+\item \mscript{create_subscription()} creates a subscription to \mytopicScript{chatter663}
+\item \mscript{SubscriberNode::chatter_callback()} will be called for each arriving Message on \mytopicScript{chatter663}
+\end{compactitem}
+\end{compactitem}
+\vspace*{\fill}
+\end{frame}
+
+%#####################################
+\begin{frame}[fragile]{\secsecsec}
+\vspace*{\fill}
+\begin{center} 
+{\footnotesize \bf \mytodo \raleway  Edit CMakeLists.txt}\doublerulefill
+
+
+\begin{cmakescript}
+find_package(example_interfaces REQUIRED) 
+
+add_executable(first_node_cpp src/first_node_cpp.cpp)
+ament_target_dependencies(first_node_cpp rclcpp)
+
+add_executable(publisher_cpp src/publisher_cpp.cpp)
+ament_target_dependencies(publisher_cpp rclcpp example_interfaces)
+
+add_executable(subscriber_cpp src/subscriber_cpp.cpp)
+ament_target_dependencies(subscriber_cpp rclcpp example_interfaces)
+
+install(TARGETS
+first_node_cpp 
+publisher_cpp
+subscriber_cpp
+DESTINATION lib/${PROJECT_NAME}
+)
+
+\end{cmakescript}
+
+{\footnotesize \bf \mytodo \raleway  Edit package.xml}\doublerulefill
+
+\begin{xmlscript}
+<depend>example_interfaces</depend>
+\end{xmlscript}
+
+
+\end{center}
+\vspace*{\fill}
+\end{frame}
+
 
 % %%%%%%%%%%%%%%%%%%
 % %   --- FRAME
@@ -3445,33 +2777,241 @@ ROS-compliant package's root folder.}
 %%%%%%%%%%%%%%%%%%
 %   --- FRAME
 %%%%%%%%%%%%%%%%%%
-\section{Function for Sourcing a Specific Package}
-\begin{frame}[fragile]{\sec}
+% \section{Function for Package}
+% \begin{frame}[fragile]{\sec}
+% \vspace*{\fill}
+% \begin{center} 
+
+% \begin{bashTinyList}
+% code_path=/home/zeid/ariac2023_fork
+
+% function ariac(){
+%   if [ "$1" = "-b" ]
+%   then
+%     cd $code_path
+%     colcon build
+%     source install/setup.zsh
+%   elif [ "$1" = "-c" ]
+%   then
+%     cd $code_path
+%     rm -rf build install log
+%     colcon build
+%     source install/setup.zsh
+%   elif [ "$1" = "-r" ]
+%   then
+%     ros2 launch ariac_gazebo ariac.launch.py
+%   else
+%     source /opt/ros/galactic/setup.zsh
+%     cd $code_path
+%     source install/setup.zsh 
+%     export _colcon_cd_root=/opt/ros/galactic
+%     source /usr/share/colcon_argcomplete/hook/colcon-argcomplete.zsh
+%     source /usr/share/colcon_cd/function/colcon_cd.sh
+%     eval "$(register-python-argcomplete3 ros2)"
+%     eval "$(register-python-argcomplete3 colcon)"
+%   fi
+% }
+
+% ariac
+% \end{bashTinyList}
+
+% \end{center}
+% \vspace*{\fill}
+% \end{frame}
+
+%#####################################
+\subsection{Python and \CC Nodes}
+\begin{frame}[fragile]{\secsec}
 \vspace*{\fill}
-\begin{center} 
 
-\begin{bashScriptList}
-# define the function
-function enpm663(){
-  source /opt/ros/galactic/setup.zsh
-  cd /home/zeid/dev/enpm663_ws
-  source install/setup.zsh
-  export _colcon_cd_root=/home/zeid/dev/enpm663_ws
-  source /usr/share/colcon_argcomplete/hook/colcon-argcomplete.zsh
-  source /usr/share/colcon_cd/function/colcon_cd.sh
-  eval "$(register-python-argcomplete3 ros2)"
-  eval "$(register-python-argcomplete3 colcon)"
-}
+{\footnotesize \bf \mynote \raleway  \CC and Python Package}\doublerulefill
+\begin{mdframed}
+\raleway \scriptsize
+In the previous lecture we created \mypackageScript{first_package} for both \CC and Python Nodes. 
+\end{mdframed}
 
-# call the function
-enpm663
-\end{bashScriptList}
+{\footnotesize \bf \mynote \raleway  \CC Nodes}\doublerulefill
+\begin{mdframed}
+\raleway \scriptsize
+To create and use \CC Nodes in this package, reuse the approach described for the package \\\mypackageScript{first_package_cpp} 
+\end{mdframed}
 
-\end{center}
+{\footnotesize \bf \mynote \raleway  Python Nodes}\doublerulefill
+\begin{mdframed}
+\raleway \footnotesize
+\begin{compactitem}
+    \scriptsize
+    \item \myinfo Below is just a recommendation on how to structure the package for Python Nodes.
+\item The folder \mydirScript{first_package/first_package} only contains Python modules that will be imported (but not called). 
+\item The folder \mydirScript{first_package/nodes} only contains Python Nodes which are called (but not imported). Files in this folder import modules located in \mydirScript{first_package/first_package}.
+\begin{compactitem}
+    \scriptsize
+    \item In the files located in \mydirScript{nodes}, you need to add \emphnorm{\#!/usr/bin/env python3} at the top of each file. The reason is that in \mypackageScript{first_package_py}, the Python scripts were called through \myfileScript{setup.py}, but now they will directly be called.
+\end{compactitem}
+\end{compactitem}
+
+\end{mdframed}
+\vspace*{\fill}
+\end{frame}
+
+%####################################
+\begin{frame}[fragile]{\secsec}
+\vspace*{\fill}
+{\footnotesize \bf \mynote \raleway Package Setup for Python Nodes}\doublerulefill
+\begin{mdframed}
+\raleway \scriptsize
+Since we created a package for \CC, we need to do some extra work to be able to run Python Nodes.
+\end{mdframed}
+
+    \begin{compactitem}
+    \footnotesize
+        \item In \myfileScript{package.xml}
+        \begin{xmlscript}
+<buildtool_depend>ament_cmake_python</buildtool_depend>
+        \end{xmlscript}
+        \item In \myfileScript{CMakeLists.txt}
+        \begin{cmakescript}
+# Install Python modules
+ament_python_install_package(${PROJECT_NAME} 
+  SCRIPTS_DESTINATION lib/${PROJECT_NAME})
+
+# Install Python executables
+install(PROGRAMS
+  nodes/publisher_py.py
+  nodes/subscriber_py.py
+  DESTINATION lib/${PROJECT_NAME}
+)
+        \end{cmakescript}
+\item We previously used \myterminalScript{ros2 run first_package_py publisher_py} because the Node was run from \myfileScript{setup.py}. We do not have \myfileScript{setup.py} in this package, so we need to run the script directly with  \myterminalScript{ros2 run first_package publisher_py.py}
+    \end{compactitem}
 \vspace*{\fill}
 \end{frame}
 
 
+%####################################
+\section{Launch Files}
+\begin{frame}[fragile]{\sec}
+\vspace*{\fill}
+{\footnotesize \bf \mydefinition \raleway Launch Files}\doublerulefill
+\begin{mdframed}
+\raleway \scriptsize
+\urllink{https://docs.ros.org/en/foxy/Tutorials/Intermediate/Launch/Creating-Launch-Files.html}{Launch files} in ROS2 can be written in XML, YAML, or Python. With Python it is easier to add logic (\pscript{if}, \pscript{else}, \pscript{for},  \pscript{while}, etc), functions, events, \pscript{print}, etc. Here is an \urllink{https://github.com/ros2/launch_ros/blob/foxy/launch_ros/examples/lifecycle_pub_sub_launch.py}{example} of a complex launch file written in Python.
+\end{mdframed}
+
+{\footnotesize \bf \mytodo \raleway Create a Launch File}\doublerulefill
+\begin{mdframed}
+\raleway \scriptsize
+\begin{compactitem}
+    \scriptsize
+\item In the package \mypackageScript{first_package}, create a \mydirScript{launch} folder.    
+\item In this folder, create the file \myfileScript{first.launch.py}
+\end{compactitem}
+\end{mdframed}
+
+{\footnotesize \bf \mytodo \raleway Edit the Launch File}\doublerulefill
+\begin{mdframed}
+\raleway \scriptsize
+\begin{compactitem}
+    \scriptsize
+\item Edit \myfileScript{first.launch.py} to start the publisher and the subscriber.
+\end{compactitem}
+
+\end{mdframed}
+\vspace*{\fill}
+\end{frame}
+
+
+%####################################
+
+\begin{frame}[fragile]{\sec}
+\vspace*{\fill}
+{\footnotesize \bf \mydefinition \raleway Minimal Example \#1}\doublerulefill
+\begin{mdframed}
+\raleway \scriptsize
+Example of a minimal working launch file to run one publisher and one subscriber.
+\end{mdframed}
+
+\begin{pyscriptII}
+# pull in some Python launch modules.
+from launch import LaunchDescription  
+from launch_ros.actions import Node
+
+# this function is needed
+def generate_launch_description(): 
+    ld = LaunchDescription()            # instantiate a Launchdescription object
+    publisher_node = Node(              # declare your Node
+        package="first_package",        # package name
+        executable="publisher_py.py"    # executable as set in setup.py
+    )
+    subscriber_node = Node(
+        package="first_package",
+        executable="subscriber_cpp"
+    )
+    ld.add_action(publisher_node)  # add each Node to the LaunchDescription object
+    ld.add_action(subscriber_node) # add each Node to the LaunchDescription object
+    return ld                      # return the LaunchDescription object
+\end{pyscriptII}
+
+{\footnotesize \bf \mywarning \raleway Compile Package}\doublerulefill
+\begin{mdframed}
+\raleway \scriptsize
+Always rebuild your package after modifying the launch file.
+\end{mdframed}
+\vspace*{\fill}
+\end{frame}
+
+\begin{frame}[fragile]{\sec}
+\vspace*{\fill}
+{\footnotesize \bf \mydefinition \raleway Minimal Example \#2}\doublerulefill
+\begin{mdframed}
+\raleway \scriptsize
+This example is similar to the example from the previous slide. Instead of creating a \pscript{LaunchDescription()} object and returnint it, we return the call to \pscript{LaunchDescription()} directly.
+\end{mdframed}
+
+\begin{pyscriptII}
+from launch import LaunchDescription
+from launch_ros.actions import Node
+
+def generate_launch_description():
+    return LaunchDescription([
+        Node(
+            package="first_package",
+            executable="publisher_py.py",
+        ),
+        Node(
+            package="first_package",
+            executable="subscriber_cpp",
+        ),
+    ])
+\end{pyscriptII}
+
+
+\vspace*{\fill}
+\end{frame}
+
+
+\begin{frame}[fragile]{\sec}
+\vspace*{\fill}
+{\footnotesize \bf \mytodo \raleway Edit CMakeLists.txt}\doublerulefill
+\begin{mdframed}
+\raleway \scriptsize
+Since we created a new folder \mydirScript{launch}, we need to install it as well. Edit \myfileScript{CMakeLists.txt} from \mypackageScript{first_package}
+\end{mdframed}
+
+\begin{cmakescript}
+install(DIRECTORY include launch DESTINATION share/${PROJECT_NAME})
+\end{cmakescript}
+
+{\footnotesize \bf \mytodo \raleway Run Launch File}\doublerulefill
+\begin{mdframed}
+\raleway \scriptsize
+\myterminalScript{colcon build -{}-packages-select first_package}
+
+\myterminalScript{ros2 launch first_package first.launch.py}
+\end{mdframed}
+
+\vspace*{\fill}
+\end{frame}
 
 
 %%%%%%%%%%%%%%%%%%
@@ -3481,10 +3021,18 @@ enpm663
 \begin{frame}[fragile]{\sec}
 \vspace*{\fill}
 \begin{center} 
+\Large
 
-{\large \myinfo \cnordZero{L2:} Course Introduction} \doublerulefill
+\myinfo~\cnordZero{L4:} ROS -- Part III.
 
-% {\large \mywarning Quiz} \doublerulefill
+\begin{itemize}
+\normalsize
+    \item More on Launch Files.
+    \item Service Clients.
+    \item Custom Messages.
+    \item Multithreaded Executors.
+    \item Parameters.
+\end{itemize}
 
 \end{center}
 \vspace*{\fill}
