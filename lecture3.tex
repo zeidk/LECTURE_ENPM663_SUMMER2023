@@ -1414,6 +1414,8 @@ nobeforeafter,
   colframe=black,coltext=nordZero,colback=white,
   overlay={\begin{tcbclipinterior}\fill[roscolor] (frame.south west)
     rectangle node[text=black,font=\sffamily\bfseries\footnotesize,rotate=0] {n} ([xshift=6mm]frame.north west);\end{tcbclipinterior}}}
+
+
     
 \newtcbox{\mynodeNormal}{enhanced,nobeforeafter,tcbox raise base,boxrule=0.5pt,top=0mm,bottom=0mm,
   right=0mm,left=6mm,arc=1pt,boxsep=1pt,fontupper=\normalsize\raleway,before upper={\vphantom{dlg}},
@@ -1570,6 +1572,11 @@ nobeforeafter,
   overlay={\begin{tcbclipinterior}\fill[nordZero] (frame.south west)
     rectangle node[text=white,font=\sffamily\bfseries\tiny,rotate=0] {\faToolbox} ([xshift=6mm]frame.north west);\end{tcbclipinterior}}}
 
+\newtcbox{\myExe}{enhanced,nobeforeafter,tcbox raise base,boxrule=0.5pt,top=0mm,bottom=0mm,
+  right=0mm,left=6mm,arc=1pt,boxsep=1pt,before upper={\vphantom{dlg}},
+  colframe=IndianRed2,coltext=nordZero,colback=white,
+  overlay={\begin{tcbclipinterior}\fill[IndianRed2] (frame.south west)
+    rectangle node[text=white,font=\sffamily\bfseries\tiny,rotate=0] {\faPlay} ([xshift=6mm]frame.north west);\end{tcbclipinterior}}}
     
 \newtcbox{\myTerminal}{enhanced,nobeforeafter,tcbox raise base,boxrule=0.5pt,top=0mm,bottom=0mm,
   right=0mm,left=6mm,arc=1pt,boxsep=1pt, fontupper=\sffamily, before upper={\vphantom{dlg}},
@@ -1855,7 +1862,7 @@ urlcolor={citationcolor}
 {\large \myDefinitionIcon Node} \doublerulefill
 
 \begin{center}
-\emph{A \CC Node needs to be compiled while a Python Node does not.}
+\emph{\CC Nodes need to be compiled while Python Nodes do not.}
 \begin{compactitem}
 \footnotesize
     \item Python Nodes can communicate with Python and \CC Nodes.
@@ -1901,8 +1908,7 @@ urlcolor={citationcolor}
 {\large \myDefinitionIcon Message} \doublerulefill
 
 \begin{center}
-\footnotesize
-Nodes communicate with each other by publishing Messages to Topics. A Message is a simple data structure, comprising typed fields.
+\emph{Nodes communicate with each other by publishing Messages to Topics. A Message is a simple data structure, comprising typed fields.}
 \end{center}
 
 
@@ -1938,12 +1944,12 @@ Nodes communicate with each other by publishing Messages to Topics. A Message is
 
 %#####################################
 \subsection{Python}
-\subsubsection*{Simple Node}
+\subsubsection*{Minimal Node}
 %#####################################
 \begin{frame}[fragile]{\secsecsec}
 \vspace*{\fill}
 
-{\large \mytodo Write a Python Node } \doublerulefill
+{\large \mytodo Write a Minimal Python Node } \doublerulefill
 
 
 \begin{compactitem}
@@ -1953,28 +1959,87 @@ Nodes communicate with each other by publishing Messages to Topics. A Message is
     \footnotesize
     {\footnotesize Package} & \myROSPackage{first_package_py} \\
     {\footnotesize File} & \myFile{first_node.py} \\
-    {\footnotesize Node} & \myNode{first_node_py} \\
+    {\footnotesize Node} & \myNode{minimal_python_node} \\
+    {\footnotesize Executable} & \myExe{first_node_exe} \\
     \end{tabular} 
-    \item Edit \myFile{setup.py}
 \begin{pyscript}
-entry_points={
-    'console_scripts': [
-        'first_node_py = first_package_py.first_node:main'
-    ],
-},
+import rclpy # ROS 2 Python client
+from rclpy.node import Node # Node class
+
+
+def main(args=None):
+    # 1.Initialize ROS communications for a given context
+    rclpy.init(args=args)
+    # 2. Instantiate a Node
+    node = Node('minimal_python_node')
+    node.get_logger().info('Help me Obi-Wan Kenobi, you are my only hope')
+    # 3. Shutdown a previously initialized context
+    rclpy.shutdown()
 \end{pyscript}
-\item Build the package: \myTerminal{colcon build -{}-packages-select first_package_py}
-\item Run the Node: \myTerminal{ros2 run first_package_py first_node_py}
-\begin{compactitem}
-    \item[] \mywarning The argument \myTerminalBlank{first_node_py} is from the name  provided in \myFile{setup.py}
+
+\mydefinition A context is an internal object used to keep track of some information/state.
 \end{compactitem}
-\item Inspect the Node: \myTerminal{ros2 node info /first_node_py}
-\item \mytodo Create another script \myFile{second_node.py} in the same package as an exercise.
-\end{compactitem}
+
 
 
 \vspace*{\fill}
 \end{frame}
+
+%#####################################
+\begin{frame}[fragile]{\secsecsec}
+\vspace*{\fill}
+
+{\large \mytodo Execute a Node } \doublerulefill
+
+
+\begin{compactitem}
+\item \mybadpractice You can execute the script directly with \myTerminal{python3 first_node.py} but this is not the correct way.
+\item \mybestpractice Execute it using ROS CLI.
+\begin{compactenum}
+    \item Create an entry point for the script.
+\begin{pyscript}
+entry_points={
+    'console_scripts': [
+        'first_node_exe = first_package_py.first_node:main'
+    ],
+},
+\end{pyscript}
+\item Build the package: \myTerminal{colcon build -{}-packages-select first_package_py}
+\begin{compactitem}
+    \item \myExe{first_node_exe} is generated in the \myFolder{install} folder.
+\end{compactitem}
+\item Run the Node: \myTerminal{ros2 run first_package_py first_node_exe}
+\begin{compactitem}
+    \item \myExe{first_node_exe} from the \myFolder{install} folder is executed.
+\end{compactitem}
+\end{compactenum}
+
+\end{compactitem}
+
+
+{\large \mytodo Inspect a Node } \doublerulefill
+
+\begin{compactitem}
+    \item \myTerminal{ros2 node info /minimal_python_node}
+\end{compactitem}
+\vspace*{\fill}
+\end{frame}
+
+
+%#####################################
+\begin{frame}[fragile]{\secsecsec}
+\vspace*{\fill}
+
+{\large \mynote } \doublerulefill
+
+
+\begin{compactitem}
+\item The argument \myTerminalBlank{-{}-symlink-install} allows you to run Python Nodes without re-compiling them. An symbolic link to the original file is used.
+
+\end{compactitem}
+\vspace*{\fill}
+\end{frame}
+
 
 
 \subsubsection*{Publisher}
